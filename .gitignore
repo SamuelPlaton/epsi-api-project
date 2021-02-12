@@ -1,0 +1,7 @@
+# Ignore IDE file
+.idea
+
+# Ignore api files
+api/node_modules/
+api/package-lock.json
+api/.env
