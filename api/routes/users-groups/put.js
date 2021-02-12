@@ -10,7 +10,7 @@ export const routes = express.Router();
  * /usersGroups/{id}:
  *   put:
  *     tags:
- *       - groups
+ *       - usersGroups
  *     produces:
  *       - application/json
  *     summary:

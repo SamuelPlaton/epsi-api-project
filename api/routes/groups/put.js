@@ -25,8 +25,6 @@ export const routes = express.Router();
  *              type: string
  *            token:
  *              type: string
- *            budget:
- *              type: float
  *            title:
  *              type: string
  *            description:
@@ -39,7 +37,6 @@ export const routes = express.Router();
  *              budget: float
  *              title: string
  *              description: string
- *              budget: float
  *     responses:
  *      '200':
  *        description: Updated
