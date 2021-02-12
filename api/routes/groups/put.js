@@ -1,6 +1,6 @@
 import { sqlInstance } from '../../index.js';
 import express from 'express';
-import { checkToken } from '../security/security.js';
+import { checkOwner, checkToken } from '../security/security.js';
 
 export const routes = express.Router();
 
@@ -59,10 +59,14 @@ routes.put('/groups/:id', async (request, response) => {
     response.status(403).end();
     return;
   }
+  const properOwner = await checkOwner(params.id, request.params.id);
+  if(!properOwner){
+    response.send('Not owner');
+    response.status(403).end();
+    return;
+  }
 
-  // todo: check if user is the owner
-
-  const sql = "UPDATE GROUPS SET TITLE = ?, DESCRIPTION = ?, BUDGET = ? WHERE ID = ?";
+  const sql = "UPDATE BUDGET_GROUPS SET TITLE = ?, DESCRIPTION = ?, BUDGET = ? WHERE ID = ?";
   sqlInstance.request(sql,
     [
       params.title,
