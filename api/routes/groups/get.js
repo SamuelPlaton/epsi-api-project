@@ -23,7 +23,7 @@ export const routes = express.Router();
  *            users:
  *              type: string
  *            example:
- *              users: true
+ *              users: string
  *     responses:
  *      '200':
  *        description: Array containing the group and the users affiliated

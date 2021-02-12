@@ -1,12 +1,13 @@
-import { checkToken } from '../security/security';
-import { sqlInstance } from '../../index';
+import express from 'express';
+import { checkToken } from '../security/security.js';
+import { sqlInstance } from '../../index.js';
 
 export const routes = express.Router();
 
 /**
  * @swagger
  *
- * /usersGroups/:id
+ * /usersGroups/{id}:
  *   post:
  *     tags:
  *       - usersGroups
