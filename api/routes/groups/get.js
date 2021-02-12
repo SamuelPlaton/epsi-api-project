@@ -28,26 +28,40 @@ export const routes = express.Router();
  *      '200':
  *        description: Array containing the group and the users affiliated
  */
-// todo: handle users affiliated
-routes.get('/groups/:id', (request, response) => {
-  // Retrieve our Service, his sectors and users affiliated
+routes.get('/groups/:id',  async (request, response) => {
   const includes = request.body;
-  // Default query
-  sqlInstance.request('SELECT * FROM BUDGET_GROUPS WHERE ID = ?', [request.params.id]).then(result => {
-
-    // Everytime an include is settled, we increment the index result
+  // Prepare our results arrays
+  const userGroupRes = [];
+  const userRes = [];
+  let groupRes;
+  // Retrieve our group
+  groupRes = await sqlInstance.request('SELECT * FROM BUDGET_GROUPS WHERE ID = ?', [request.params.id]).then(async result => {
+    // If user included, retrieve their ids for later
     if (includes.users) {
-      sqlInstance.request('SELECT * FROM USERS_GROUPS WHERE ID_GROUP = ?', request.params.id).then(optionalResult => {
-        // We send formatted data
-        response.send({
-          group: result[0],
-          users: optionalResult,
-        }).end();
-        return;
+       await sqlInstance.request('SELECT * FROM USERS_GROUPS WHERE ID_GROUP = ?', request.params.id).then(async usersGroups => {
+        usersGroups.map( userGroup => {
+          userGroupRes.push(userGroup);
+        })
       });
     }
-    response.send({
-      group: result[0],
-    }).end();
+    // return our group result
+    return result[0];
   });
+  // If user retrieve settled
+  if(includes.users){
+    await sqlInstance.request('SELECT U.ID, U.FIRSTNAME, U.LASTNAME, U.GENDER, U.EMAIL, U.REGISTER_DATE, U.PHONE FROM USERS U WHERE U.ID IN (?)',
+      [userGroupRes.map(userGroup => userGroup.id_user)]).then( user => {
+        // Retrieve his group
+      const userGroup = userGroupRes.find(element => user[0].ID === element.id_user);
+      // If user exist, add him to our list
+      if(user[0] && userGroup){
+        userRes.push({...user[0], ROLE: userGroup.role, MONEY: userGroup.money });
+      }
+    })
+  }
+
+  response.send({
+    group: groupRes,
+    users: userRes,
+  }).end();
 });
