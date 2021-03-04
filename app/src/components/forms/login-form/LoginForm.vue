@@ -12,7 +12,7 @@
 
 <script>
 import Api from "../../../api/Api";
-import type {NewUsersData} from "../../../api/users/UsersApi";
+import router from "../../../router";
 
 export default {
   name: "LoginForm",
@@ -23,16 +23,14 @@ export default {
     }
   },
   methods: {
-    login() {
-      console.log('group joined');
-      console.log(this.email);
-      console.log(this.password);
-      const user: NewUsersData = { email: this.email};
-      const newUser = Api.UsersApi.post(user);
-      // new User ->stocker dans le store JSON.stringify(user)
-      // user = JSON.parse(getFromStore(user))
-      // Rediriger vers la home page
-      Api.UsersApi.login(this.email, this.password);
+    async login() {
+      const user = await Api.UsersApi.login(this.email, this.password);
+      if(user){
+        localStorage.activeUser = JSON.stringify(user);
+        await router.push('/');
+      }else{
+        this.$vToastify.error('Email ou mot de passe incorrect', 'Erreur');
+      }
     }
   }
 }
