@@ -35,9 +35,8 @@ export default {
       const user: NewUsersData = {firstName; this.firstName, lastName: this.lastName, email: this.lastname, password: this.password};
       const newUser = await Api.UsersApi.post(user);
 
-      // stocker dans le store (stringify)
-      // récupérer du store (parse)
-      // rediriger vers la login page
+      localStorage.activeUser = JSON.stringify(user);
+      // rediriger vers la home page
     }
   }
 }
