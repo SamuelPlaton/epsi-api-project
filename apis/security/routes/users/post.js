@@ -50,7 +50,7 @@ export const routes = express.Router();
  *
  */
 routes.post('/users', async (request, response) => {
-  const params = request.body;
+  const params = request.body.data;
   const uuid = uuidv4();
 
   if (!params.firstName || !params.lastName || !params.gender || !params.email || !params.password ) {
@@ -125,7 +125,7 @@ routes.post('/users', async (request, response) => {
  *        description: Wrong email or password
  */
 routes.post('/users/login', async (request, response) => {
-  const params = request.body;
+  const params = request.body.data;
 
   if (!params.email || !params.password) {
     response.send('Bad parameters');

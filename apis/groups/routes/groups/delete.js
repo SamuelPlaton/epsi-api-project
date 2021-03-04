@@ -1,6 +1,6 @@
 import express from 'express';
 import { sqlInstance } from '../../index.js';
-import { checkToken } from '../security/security.js';
+import {checkOwner, checkToken} from '../security/security.js';
 
 export const routes = express.Router();
 
@@ -38,7 +38,7 @@ export const routes = express.Router();
  *        description: Unauthorized
  */
 routes.delete('/groups/:id', async (request, response) => {
-  const params = request.body;
+  const params = request.body.data;
 
   if (!params.token || !params.id) {
     response.send('Bad parameters');
@@ -53,7 +53,12 @@ routes.delete('/groups/:id', async (request, response) => {
     return;
   }
 
-  // todo: check if the user is the group owner
+  const userOwner = await checkOwner(params.id, request.params.id);
+  if(!userOwner){
+    response.send('User is not the owner');
+    response.status(403).end();
+    return;
+  }
 
   try {
     // Delete users_groups
@@ -66,6 +71,5 @@ routes.delete('/groups/:id', async (request, response) => {
   } catch (err) {
     throw new Error(err);
   }
-
 
 });

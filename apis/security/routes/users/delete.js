@@ -15,7 +15,7 @@ export const routes = express.Router();
  *     produces:
  *       - application/json
  *     summary:
- *       - Delete a user from the database (and his affiliations to group and other groups if he is the owner)
+ *       - Delete a user from the database
  *     requestBody:
  *      content:
  *        application/json:
@@ -35,7 +35,7 @@ export const routes = express.Router();
  *        description: Unauthorized
  */
 routes.delete('/users/:id', async (request, response) => {
-  const params = request.body;
+  const params = request.body.data;
 
   if (!params.token) {
     response.send('Bad parameters');
@@ -51,9 +51,6 @@ routes.delete('/users/:id', async (request, response) => {
   }
 
   try {
-    // Delete users_groups
-    sqlInstance.request('DELETE FROM USERS_GROUPS WHERE ID_USER = ?', [request.params.id]);
-    // todo: retrieve groups where user is owner and remove everybody
     // Delete user
     sqlInstance.request('DELETE FROM USERS WHERE ID = ?', [request.params.id]).then(result => {
       response.send('');

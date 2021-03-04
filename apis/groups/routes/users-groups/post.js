@@ -1,13 +1,13 @@
 import express from 'express';
-import { checkToken } from '../security/security.js';
-import { sqlInstance } from '../../index.js';
+import {checkToken} from '../security/security.js';
+import {sqlInstance} from '../../index.js';
 
 export const routes = express.Router();
 
 /**
  * @swagger
  *
- * /usersGroups/{id}:
+ * /usersGroups/{code}:
  *   post:
  *     tags:
  *       - usersGroups
@@ -36,29 +36,31 @@ export const routes = express.Router();
  *      '403':
  *        description: Wrong token
  */
-routes.post('/usersGroups/:id', async (request, response) => {
-  const params = request.body;
-  // Parameters check
-  if(!params.id || !params.token ){
-    response.send('Bad parameters');
-    response.status(400).end();
-    return;
-  }
-  // Token check
-  const properToken = await checkToken(params.token, params.id);
-  if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
-    return;
-  }
+routes.post('/usersGroups/:code', async (request, response) => {
+    const {id, token} = request.body.data;
+    // Parameters check
+    if (!id || !token) {
+        response.send('Bad parameters');
+        response.status(400).end();
+        return;
+    }
+    // Token check
+    const properToken = await checkToken(token, id);
+    if (!properToken) {
+        response.send('Wrong token');
+        response.status(403).end();
+        return;
+    }
 
-  // Insert user affiliated as owner
-  sqlInstance.request("INSERT INTO USERS_GROUPS(ID, ID_USER, ID_GROUP, ROLE) VALUES(?, ?, ?, ?)",
-    [uuidv4(),
-      params.id,
-      request.params.id,
-      "guest"]).then(result => {
-    response.send("");
-    response.status(201).end();
-  });
+    const idGroup = await sqlInstance.request("SELECT ID FROM GROUP WHERE CODE = ?", [request.params.code]).then(response => response[0]["ID"])
+    // Insert user affiliated as owner
+    sqlInstance.request("INSERT INTO USERS_GROUPS(ID, ID_USER, ID_GROUP, ROLE, MONEY) VALUES(?, ?, ?, ?, ?)",
+        [uuidv4(),
+            id,
+            idGroup,
+            "guest",
+            0]).then(result => {
+        response.send("");
+        response.status(201).end();
+    });
 });

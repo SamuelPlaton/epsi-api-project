@@ -1,6 +1,6 @@
 import express from 'express';
 import { sqlInstance } from '../../index.js';
-import { checkToken } from '../security/security.js';
+import {checkOwner, checkToken} from '../security/security.js';
 
 export const routes = express.Router();
 
@@ -30,7 +30,7 @@ export const routes = express.Router();
  *              type: string
  *            example:
  *              token: string
- *              id: string
+ *              id: user id
  *              owner: id owner (optional)
  *     responses:
  *      '204':
@@ -41,33 +41,43 @@ export const routes = express.Router();
  *        description: Unauthorized
  */
 routes.delete('/usersGroups/:id', async (request, response) => {
-  const params = request.body;
+  const {token, id, owner} = request.body.data;
 
-  if (!params.token || !params.id) {
+  if (!token || !id) {
     response.send('Bad parameters');
     response.status(400).end();
     return;
   }
 
   // delete from user himself
-  const properToken = await checkToken(params.token, params.id);
-  if(!properToken && !params.owner){
+  const properToken = await checkToken(token, id);
+  if(!properToken && !owner){
     response.send('Wrong token');
     response.status(403).end();
     return;
   }
 
-  const properOwnerToken = await checkToken(params.token, params.owner);
-  if(!properOwnerToken && params.owner){
+  const properOwnerToken = await checkToken(token, owner);
+  if(!properOwnerToken && owner){
     response.send('Wrong token');
     response.status(403).end();
     return;
   }
 
-  // todo: check if the user is indeed the owner
-  // todo: do a method in security
+  const checkOwner = await checkOwner(owner, request.params.id);
+  if(owner && !checkOwner){
+    response.send('You are not the owner');
+    response.status(403).end();
+    return;
+  }
 
-  sqlInstance.request('DELETE FROM USERS_GROUPS WHERE ID_USER = ? AND ID_GROUP = ?', [params.id, request.params.id]).then(result => {
+  if(owner === id){
+    response.send('You must set a new owner first');
+    response.status(403).end();
+    return;
+  }
+
+  sqlInstance.request('DELETE FROM USERS_GROUPS WHERE ID_USER = ? AND ID_GROUP = ?', [id, request.params.id]).then(result => {
     response.send('');
     response.status(204).end();
   });

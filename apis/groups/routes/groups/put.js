@@ -46,20 +46,20 @@ export const routes = express.Router();
  *        description: Wrong token
  */
 routes.put('/groups/:id', async (request, response) => {
-  const params = request.body;
-  if(!params.id || !params.token || !params.budget || !params.title || !params.description || !params.budget ){
+  const {id, token, title, description, budget} = request.body.data;
+  if(!id || !token || !title || !description || !budget ){
     response.send('Bad parameters');
     response.status(400).end();
     return;
   }
   // Token check
-  const properToken = await checkToken(params.token, params.id);
+  const properToken = await checkToken(token, id);
   if(!properToken){
     response.send('Wrong token');
     response.status(403).end();
     return;
   }
-  const properOwner = await checkOwner(params.id, request.params.id);
+  const properOwner = await checkOwner(id, request.params.id);
   if(!properOwner){
     response.send('Not owner');
     response.status(403).end();
@@ -69,9 +69,9 @@ routes.put('/groups/:id', async (request, response) => {
   const sql = "UPDATE BUDGET_GROUPS SET TITLE = ?, DESCRIPTION = ?, BUDGET = ? WHERE ID = ?";
   sqlInstance.request(sql,
     [
-      params.title,
-      params.description,
-      params.budget,
+      title,
+      description,
+      budget,
       request.params.id]).then(result => {
     response.send("");
     response.status(200).end();
