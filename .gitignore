@@ -2,6 +2,10 @@
 .idea
 
 # Ignore api files
-api/node_modules/
-api/package-lock.json
-api/.env
+apis/groups/node_modules/
+apis/groups/package-lock.json
+apis/groups/.env
+
+apis/security/node_modules/
+apis/security/package-lock.json
+apis/security/.env
