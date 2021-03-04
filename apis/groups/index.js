@@ -5,7 +5,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { deleteGroupsRouter, getGroupsRouter, postGroupsRouter, putGroupsRouter } from './routes/groups/index.js';
-import { deleteUsersGroupsRouter, postUsersGroupsRouter, putUsersGroupsRouter } from './routes/users-groups/index.js';
+import { deleteUsersGroupsRouter, getUsersGroupsRouter, postUsersGroupsRouter, putUsersGroupsRouter } from './routes/users-groups/index.js';
 
 // Enable .env config variables
 dotenv.config();
@@ -39,6 +39,7 @@ app.use('/', postGroupsRouter);
 app.use('/', putGroupsRouter);
 // Users Groups Routes
 app.use('/', deleteUsersGroupsRouter);
+app.use('/', getUsersGroupsRouter);
 app.use('/', postUsersGroupsRouter);
 app.use('/', putUsersGroupsRouter);
 

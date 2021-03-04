@@ -53,7 +53,7 @@ routes.post('/users', async (request, response) => {
   const params = request.body.data;
   const uuid = uuidv4();
 
-  if (!params.firstName || !params.lastName || !params.gender || !params.email || !params.password ) {
+  if (!params.firstName || !params.lastName || !params.email || !params.password ) {
     response.send('Bad parameters');
     response.status(400).end();
     return;
@@ -65,27 +65,27 @@ routes.post('/users', async (request, response) => {
   const emailExist = await sqlInstance.request('SELECT * FROM USERS WHERE EMAIL = ?', [params.email]).then(result => {
     return result.length > 0;
   });
-  const phoneExist = await sqlInstance.request('SELECT * FROM USERS WHERE PHONE = ?', [params.phone]).then(result => {
-    return result.length > 0;
-  });
-  if(emailExist || phoneExist){
-    emailExist && response.send('Email already exist');
-    !emailExist && phoneExist && response.send('Phone already exist');
+  if(emailExist){
+    response.send('Email already exist');
     response.status(403).end();
     return;
   }
 
   // Insert our user
-  const sql = 'INSERT INTO USERS(ID, FIRSTNAME, LASTNAME, GENDER, EMAIL, TOKEN, PHONE) VALUES(?, ?, ?, ?, ?, ?, ?)';
+  const sql = 'INSERT INTO USERS(ID, FIRSTNAME, LASTNAME, EMAIL, TOKEN) VALUES(?, ?, ?, ?, ?)';
   sqlInstance.request(sql,
     [uuid,
       params.firstName,
       params.lastName,
-      params.gender,
       params.email,
-      token,
-      params.phone]).then(result => {
-    response.send(token);
+      token]).then(result => {
+    response.send({
+      id: uuid,
+      firstname: params.firstName,
+      lastname: params.lastName,
+      email: params.email,
+      token: token
+    });
     response.status(201).end();
   });
 
@@ -133,11 +133,11 @@ routes.post('/users/login', async (request, response) => {
     return;
   }
   // Retrieve token if the email is found
-  const tokenResult = await sqlInstance.request("SELECT TOKEN FROM USERS WHERE EMAIL = ? LIMIT 1",
+  const userResult = await sqlInstance.request("SELECT * FROM USERS WHERE EMAIL = ? LIMIT 1",
     [params.email]).then(result => {
     return result;
   });
-  if (tokenResult.length === 0) {
+  if (userResult.length === 0) {
     response.send('Email not found');
     response.status(403).end();
     return;
@@ -147,10 +147,10 @@ routes.post('/users/login', async (request, response) => {
   const pwdToToken = cryptoJS.AES.encrypt(params.password, '22787802-a6e7-4c3d-8fc1-aab0ece1cb41');
   const pwd = cryptoJS.AES.decrypt(pwdToToken, '22787802-a6e7-4c3d-8fc1-aab0ece1cb41').toString();
   // Decrypt DB Token
-  const tokenToPwd = cryptoJS.AES.decrypt(tokenResult[0]['TOKEN'], '22787802-a6e7-4c3d-8fc1-aab0ece1cb41').toString();
+  const tokenToPwd = cryptoJS.AES.decrypt(userResult[0]['token'], '22787802-a6e7-4c3d-8fc1-aab0ece1cb41').toString();
   // Handle connexion success or failure
   if(pwd === tokenToPwd){
-    response.send(tokenResult[0]['TOKEN']);
+    response.send(userResult[0]);
     response.status(200).end();
   }else{
     response.send('Wrong password');
