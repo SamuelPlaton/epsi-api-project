@@ -28,7 +28,7 @@ const UsersApi = {
   get: (id: string, includes?: Array<string>) => clientSecurity.get(`/users/${id}`, setIncludes(includes)).then(response => setUsers(response.data[0])),
 
   post: (usersData: NewUsersData) => clientSecurity.post('/users', {data: usersData}).then(response => {
-    console.log(response);
+    console.log(response.data);
     return setUsers(response.data);
 
   }),
