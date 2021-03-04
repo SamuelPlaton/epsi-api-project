@@ -1,14 +1,18 @@
-import { clientgroup } from '../client/clientGroup';
+import { clientGroup } from '../client/clientGroup';
 import {setIncludes} from "../helpers";
 import type {Groups} from "@/entities";
 
 export interface NewGroupData {
+    id: number,
+    token: string,
     title: string,
     description: string,
     budget: number,
 }
 
 export interface ModifyGroupData {
+    id: number,
+    token: string,
     title: string,
     description: string,
     budget: number,
@@ -29,15 +33,15 @@ export const setGroup = (groups: Object): Groups => {
 }
 
 const GroupsApi = {
-  get: (id: string, includes?: Array<string>) => clientgroup.get(`/groups/${id}`, setIncludes(includes)).then(response => setGroup(response.data[0])),
+  get: (id: string, includes?: Array<string>) => clientGroup.get(`/groups/${id}`, setIncludes(includes)).then(response => setGroup(response.data[0])),
 
-  post: (groupData: NewGroupData) => clientgroup.post('/groups', {data: groupData}).then(response => {
+  post: (groupData: NewGroupData) => clientGroup.post('/groups', {data: groupData}).then(response => {
     console.log(response);
   }),
-  modify: (id: string, groupData: ModifyGroupData) => clientgroup.put(`/groups/${id}`, {data: groupData}).then(response => {
+  modify: (id: string, groupData: ModifyGroupData) => clientGroup.put(`/groups/${id}`, {data: groupData}).then(response => {
     console.log(response);
   }),
-    delete:(id: string, groupData: ModifyGroupData) => clientgroup.delete(`/groups/${id}`, {data: groupData}).then(response => {
+    delete:(id: string, groupData: ModifyGroupData) => clientGroup.delete(`/groups/${id}`, {data: groupData}).then(response => {
         console.log(response);
     }),
 }

@@ -1,3 +1,3 @@
-export { Users_Groups } from './User_Group'
+export { Users_Groups } from './UserGroup'
 export { Groups } from './Group'
 export { Users } from './User'

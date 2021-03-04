@@ -1,10 +1,10 @@
-import {ServicesApi} from "./services";
-import {SectorsApi} from "./sectors";
-import {UsersApi} from "./users";
+import {GroupsApi} from "./userGroups/UserGroupsApi";
+import {UserGroupsApi} from "./groups/GroupsApi";
+import {UsersApi} from "./users/UsersApi";
 
 const Api = {
-  ServicesApi: GroupsApi,
-  SectorsApi: UserGroupsApi,
+  GroupsApi: GroupsApi,
+  UserGroupsApi: UserGroupsApi,
   UsersApi: UsersApi,
 }
 

@@ -1,4 +1,4 @@
-import { clientsecurity } from '../client/clientSecurity';
+import { clientSecurity } from '../client/clientSecurity';
 import {setIncludes} from "../helpers";
 import type { Users } from "@/entities";
 
@@ -25,12 +25,12 @@ export const setUsers = (users: Object): Users => {
 }
 
 const UsersApi = {
-  get: (id: string, includes?: Array<string>) => clientsecurity.get(`/users/${id}`, setIncludes(includes)).then(response => setUsers(response.data[0])),
+  get: (id: string, includes?: Array<string>) => clientSecurity.get(`/users/${id}`, setIncludes(includes)).then(response => setUsers(response.data[0])),
 
-  post: (usersData: NewUsersData) => clientsecurity.post('/users', {data: usersData}).then(response => {
+  post: (usersData: NewUsersData) => clientSecurity.post('/users', {data: usersData}).then(response => {
     console.log(response);
   }),
-  modify: (id: string, usersData: ModifyUsersData) => clientsecurity.put(`/users/${id}`, {data: usersData}).then(response => {
+  modify: (id: string, usersData: ModifyUsersData) => clientSecurity.put(`/users/${id}`, {data: usersData}).then(response => {
     console.log(response);
   })
 }
