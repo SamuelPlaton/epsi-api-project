@@ -6,6 +6,7 @@ export interface NewUsersData {
   firstName: string,
   lastName: string,
   email: string,
+  password: string,
 }
 
 export interface ModifyUsersData {
@@ -28,9 +29,8 @@ const UsersApi = {
   get: (id: string, includes?: Array<string>) => clientSecurity.get(`/users/${id}`, setIncludes(includes)).then(response => setUsers(response.data[0])),
 
   post: (usersData: NewUsersData) => clientSecurity.post('/users', {data: usersData}).then(response => {
-    console.log(response);
+    console.log(response.data);
     return setUsers(response.data);
-
   }),
   login: (email: string, password: string) => clientSecurity.post('/users/login', {data: {email: email, password: password}}).then(response => {
     if(response.data.id){

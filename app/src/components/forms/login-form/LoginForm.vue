@@ -1,11 +1,14 @@
 <template>
-    <form class="flex flex-col items-center my-8 w-2/3 mx-auto" name="join-group" @submit="login">
+    <form class="flex flex-col items-center my-8 w-2/3 mx-auto" name="login" @submit="login">
       <label class="font-semibold text-lg">Entrez votre Email :</label>
       <input type="email" placeholder="john.doe@email.com" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="email">
       <label class="font-semibold text-lg">Entrez votre mot de passe :</label>
       <input type="password" placeholder="******" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="password">
       <button type="submit" class="p-2 bg-blue-400 rounded text-white">
         Se connecter
+      </button>
+      <button class="text-sm text-gray-400 mt-8">
+        <router-link to="/Register">Pas encore de Compte</router-link>
       </button>
     </form>
 </template>

@@ -7,7 +7,6 @@
     </div>
     <div v-if="activeUser" class="w-full">
       <button type="button" @click="isPopupOpened = true" class="p-2 bg-blue-400 rounded text-white w-48 mb-4"> Rejoindre un groupe </button>
-      <p class="text-lg font-bold my-2 text-left w-2/3 mx-auto">Mes groupes :</p>
       <GroupList/>
       <JoinGroupPopup v-if="isPopupOpened" @onLeave="isPopupOpened = false"/>
     </div>
