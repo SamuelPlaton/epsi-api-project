@@ -1,5 +1,5 @@
 <template>
-  <form name="join-group" @submit="register">
+  <form class="flex flex-col items-center my-8 w-2/3 mx-auto" name="register" @submit="register">
     <p>Entrez vos nouveau identifiants</p>
     <label class="font-semibold text-lg">Entrez votre prénom :</label>
         <input type="text" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="firstName">
@@ -16,13 +16,16 @@
 </template>
 
 <script>
+import Api from "../../../api/Api";
+import type {NewUsersData} from "../../../api/users/UsersApi";
+
 export default {
   name: "RegisterForm",
   data(){
     return{
-      firstName: ''
-      lastName: ''
-      email: ''
+      firstName: '',
+      lastName: '',
+      email: '',
       password: ''
     }
   },
@@ -32,12 +35,14 @@ export default {
       console.log(this.lastName);
       console.log(this.email);
       console.log(this.password);
-      const user: NewUsersData = {firstName; this.firstName, lastName: this.lastName, email: this.lastname, password: this.password};
+      const user: NewUsersData = {firstName: this.firstName, lastName: this.lastName, email: this.email, password: this.password};
       const newUser = await Api.UsersApi.post(user);
-
-      localStorage.activeUser = JSON.stringify(user);
-      // rediriger vers la home page
+      localStorage.activeUser = JSON.stringify(newUser);
     }
   }
 }
 </script>
+
+<style scoped>
+
+</style>
