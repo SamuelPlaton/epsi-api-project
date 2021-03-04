@@ -9,6 +9,9 @@
 </template>
 
 <script>
+import Api from "../../../api/Api";
+import router from "../../../router";
+
 export default {
   name: "JoinGroupForm",
   data(){
@@ -17,9 +20,22 @@ export default {
     }
   },
   methods: {
-    joinGroup() {
-      console.log('group joined');
-      console.log(this.code);
+    async joinGroup() {
+      const activeUser = JSON.parse(localStorage.activeUser);
+      if (!activeUser) {
+        this.$vToastify('Erreur', 'Connectez-vous pour rejoindre un groupe');
+        return;
+      }
+      const idGroup = await Api.UsersGroupsApi.post(activeUser.id, activeUser.attributes.token, this.code);
+      if(idGroup === -1){ // No group found
+        this.$vToastify('Erreur', 'Groupe introuvable');
+        return;
+      }else if(idGroup === -2){ // Already in the group
+        this.$vToastify('Erreur', 'Vous êtes déjà dans ce groupe');
+        return;
+      }else{
+        await router.push(`/group/${idGroup}`);
+      }
     }
   }
 }

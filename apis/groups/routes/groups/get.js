@@ -87,12 +87,13 @@ routes.get('/groups/:id',  async (request, response) => {
  *
  */
 routes.get('/groups', (request, response) => {
-  if (!request.query.ids) {
+  const {ids} = request.query;
+  if (!ids) {
     response.send('Bad parameters');
     response.status(400).end();
     return;
   }
-  sqlInstance.request('SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID IN (?)', [request.query.ids.join(',')]).then(result => {
+  sqlInstance.request('SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID IN (?)', [ids.split(',')]).then(result => {
     response.send(result);
   });
 });
