@@ -5,10 +5,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-    </div>
-    <router-view />
+    <Layout v-bind:title="this.$route.name"/>
+
   </div>
 </template>
 
@@ -24,6 +22,8 @@
 #nav {
   color: white;
   padding: 30px;
+  display: grid;
+
   margin-bottom: 1rem;
   background: linear-gradient(
     90deg,
@@ -40,3 +40,14 @@
   color: #f57761;
 }
 </style>
+<script>
+import Layout from "@/components/Layout";
+export default {
+  components: {Layout},
+  data(){
+    return{
+      title:    'Home'
+  }
+  }
+}
+</script>

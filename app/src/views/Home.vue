@@ -11,6 +11,7 @@ import JoinGroupPopup from "../components/popups/join-group-popup/JoinGroupPopup
 import LoginForm from "../components/forms/login-form/LoginForm";
 export default {
   name: "Home",
+
   components: {LoginForm, JoinGroupPopup, Popup, Overlay}
 };
 </script>
