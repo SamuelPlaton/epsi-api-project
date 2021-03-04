@@ -26,42 +26,74 @@ export const routes = express.Router();
  *              users: string
  *     responses:
  *      '200':
- *        description: Array containing the group and the users affiliated
+ *        description: Array containing the group and the usersGroups affiliated
  */
 routes.get('/groups/:id',  async (request, response) => {
-  const includes = request.body;
-  // Prepare our results arrays
-  const userGroupRes = [];
-  const userRes = [];
-  let groupRes;
-  // Retrieve our group
-  groupRes = await sqlInstance.request('SELECT * FROM BUDGET_GROUPS WHERE ID = ?', [request.params.id]).then(async result => {
-    // If user included, retrieve their ids for later
-    if (includes.users) {
-       await sqlInstance.request('SELECT * FROM USERS_GROUPS WHERE ID_GROUP = ?', request.params.id).then(async usersGroups => {
-        usersGroups.map( userGroup => {
-          userGroupRes.push(userGroup);
-        })
-      });
+  // Retrieve our Users, his coupons and stores affiliated
+  const includes = request.query;
+  // Setup our default query and param
+  const query = ['SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID = ?'];
+  const queryParams = [request.params.id];
+  // Our queries index result
+  const idx = [0, null];
+  let acc = 0;
+  // Everytime an include is settled, we increment the index result
+  if(includes){
+    if(includes.users){
+      query.push('SELECT ID, ID_USER, ID_GROUP, MONEY, ROLE FROM USERS_GROUPS US WHERE ID_GROUP = ?');
+      queryParams.push(request.params.id);
+      acc += 1;
+      idx[1] = acc;
     }
-    // return our group result
-    return result[0];
-  });
-  // If user retrieve settled
-  if(includes.users){
-    await sqlInstance.request('SELECT U.ID, U.FIRSTNAME, U.LASTNAME, U.GENDER, U.EMAIL, U.REGISTER_DATE, U.PHONE FROM USERS U WHERE U.ID IN (?)',
-      [userGroupRes.map(userGroup => userGroup.id_user)]).then( user => {
-        // Retrieve his group
-      const userGroup = userGroupRes.find(element => user[0].ID === element.id_user);
-      // If user exist, add him to our list
-      if(user[0] && userGroup){
-        userRes.push({...user[0], ROLE: userGroup.role, MONEY: userGroup.money });
-      }
-    })
   }
-
-  response.send({
-    group: groupRes,
-    users: userRes,
-  }).end();
+  // Set our final query
+  sqlInstance.request(query.join(';'), queryParams).then(result => {
+    response.send({
+      group: result[idx[0]],
+      users : result[idx[1]],
+    });
+  });
 });
+
+// Method GET of all selected groups data
+/**
+ * @swagger
+ *
+ * /groups:
+ *   get:
+ *     tags:
+ *       - groups
+ *     produces:
+ *       - application/json
+ *     summary:
+ *       - Get a list of groups from the database
+ *     requestBody:
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              ids:
+ *                type: array
+ *            example:
+ *              ids: [1, 2, 3]
+ *
+ *     responses:
+ *      '200':
+ *        description: Array of groups
+ *      '400':
+ *        description: Bad parameters
+ *
+ *
+ */
+routes.get('/groups', (request, response) => {
+  if (!request.query.ids) {
+    response.send('Bad parameters');
+    response.status(400).end();
+    return;
+  }
+  sqlInstance.request('SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID IN (?)', [request.query.ids.join(',')]).then(result => {
+    response.send(result);
+  });
+});
+
