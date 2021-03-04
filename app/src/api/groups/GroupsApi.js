@@ -42,7 +42,7 @@ const GroupsApi = {
     }),
 
     post: (groupData: NewGroupData) => clientGroup.post('/groups', {data: groupData}).then(response => {
-        console.log(response);
+        return response.data;
     }),
     modify: (id: string, groupData: ModifyGroupData) => clientGroup.put(`/groups/${id}`, {data: groupData}).then(response => {
         console.log(response);
