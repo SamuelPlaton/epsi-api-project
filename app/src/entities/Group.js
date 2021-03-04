@@ -1,4 +1,4 @@
-export interface Users {
+export interface Group {
   id: string;
 
   attributes: {
