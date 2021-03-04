@@ -39,7 +39,7 @@ const GroupsApi = {
 
     list: (ids: Array<string>) => clientGroup.get(`/groups?ids=${ids.join(',')}`).then(response => {
         const groups = response.data;
-        if(typeof groups === Array){
+        if(groups.length > 0){
             return groups.map(group => setGroup(group));
         }
         return [];

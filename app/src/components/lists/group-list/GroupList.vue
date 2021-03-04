@@ -32,8 +32,8 @@ export default {
       this.totalGroups = groups.map(group => {
         return {group: group, user: usersGroups.find(us => us.relationships.group === group.id)}
       });
+      console.log(groups);
     }
-    console.log(this.totalGroups.length);
   }
 }
 </script>
