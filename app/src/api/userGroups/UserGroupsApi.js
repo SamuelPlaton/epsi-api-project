@@ -3,13 +3,6 @@ import {setIncludes} from "../helpers";
 import {UserGroup} from "../../entities";
 import {Role} from "../../entities/UserGroup";
 
-export interface NewUserGroupData {
-    user: string,
-    money: number,
-    role: Role,
-    token?: string,
-}
-
 export interface ModifyUserGroupData {
   user: string,
   money: number,
@@ -18,24 +11,32 @@ export interface ModifyUserGroupData {
 }
 
 export const setUsersGroups = (userGroup: Object): UserGroup => {
-  return {id: userGroup.id,
+  return {id: userGroup["ID"],
     attributes: {
-      user: userGroup.user,
-      money: userGroup.money,
-      role: userGroup.role,
-      token: userGroup.token,
+      user: userGroup["USER"],
+      money: userGroup["MONEY"],
+      role: userGroup["ROLE"],
+      token: userGroup["TOKEN"],
     },
     relationships:{
-      User_Groups: userGroup.User_Groups,
+      user: userGroup["USER"],
+      group: userGroup["GROUP"]
     }
   };
 }
 
 const UsersGroupsApi = {
-  get: (id: string, includes?: Array<string>) => clientGroup.get(`/usersGroups/${id}`, setIncludes(includes)).then(response => setUsersGroups(response.data[0])),
+  getByUser: (id: string) => clientGroup.get(`/usersGroups/user/${id}`).then(response => {
+    return response.data.map(us => setUsersGroups(us));
+  }),
 
-  post: (userGroupData: NewUserGroupData) => clientGroup.post('/usersGroups', {data: userGroupData}).then(response => {
+  getByGroup: (id: string) => clientGroup.get(`/usersGroups/group/${id}`).then(response => {
+    return response.data.map(us => setUsersGroups(us));
+  }),
+
+  post: (id: string, token: string, code: string) => clientGroup.post(`/usersGroups`, {data: { code: code, id: id, token: token}}).then(response => {
     console.log(response);
+    return response.data;
   }),
   modify: (id: string, userGroupData: ModifyUserGroupData) => clientGroup.put(`/usersGroups/${id}`, {data: userGroupData}).then(response => {
     console.log(response);

@@ -6,20 +6,41 @@ export const routes = express.Router();
 /**
  * @swagger
  *
- * /usersGroups/{id}:
+ * /usersGroups/user/{id}:
  *   get:
  *     tags:
  *       - usersGroups
  *     produces:
  *       - application/json
  *     summary:
- *       - Get all data from a usersGroups
+ *       - Get all data from a usersGroups with a user id
  *     responses:
  *      '200':
  *        description: Array containing the usersGroup
  */
-routes.get('/usersGroups/:id',  async (request, response) => {
-    sqlInstance.request('SELECT ID, USER, GROUP, MONEY, ROLE FROM USERS_GROUPS WHERE ID = ?', request.params.id).then(result => {
+routes.get('/usersGroups/user/:id',  async (request, response) => {
+    sqlInstance.request('SELECT ID, USER, `GROUP`, MONEY, ROLE FROM USERS_GROUPS WHERE USER = ?', request.params.id).then(result => {
+        response.send(result);
+    });
+});
+
+/**
+ * @swagger
+ *
+ * /usersGroups/group/{id}:
+ *   get:
+ *     tags:
+ *       - usersGroups
+ *     produces:
+ *       - application/json
+ *     summary:
+ *       - Get all data from a usersGroups with a group id
+ *     responses:
+ *      '200':
+ *        description: Array containing the usersGroup
+ */
+routes.get('/usersGroups/group/:id',  async (request, response) => {
+    sqlInstance.request('SELECT ID, USER, `GROUP`, MONEY, ROLE FROM USERS_GROUPS WHERE `GROUP` = ?', request.params.id).then(result => {
         response.send(result);
     });
 });
@@ -61,7 +82,7 @@ routes.get('/usersGroups', (request, response) => {
         response.status(400).end();
         return;
     }
-    sqlInstance.request('SELECT ID, USER, GROUP, MONEY, ROLE FROM USERS_GROUPS WHERE ID IN (?)', [request.query.ids.join(',')]).then(result => {
+    sqlInstance.request('SELECT ID, USER, `GROUP`, MONEY, ROLE FROM USERS_GROUPS WHERE ID IN (?)', [request.query.ids.join(',')]).then(result => {
         response.send(result);
     });
 });

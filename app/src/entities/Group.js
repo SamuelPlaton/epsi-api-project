@@ -1,15 +1,14 @@
-export interface Users {
+export interface Group {
   id: string;
 
   attributes: {
     title: string,
     description: string,
     budget: number,
-    code: string,
-    registerDate: string
+    code: string
   };
 
   relationships: {
-    User_Groups: Array<string>
+    UsersGroups: Array<string>
   };
 }

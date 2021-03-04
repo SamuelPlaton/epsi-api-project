@@ -4,17 +4,17 @@ export const Role = {
 }
 
 
-export interface Users {
+export interface UserGroup {
   id: string;
 
   attributes: {
-    user: string,
     money: number,
     role: Role,
     token?: string,
   };
 
   relationships: {
-    groups: Array<string>
+    group: string,
+    user: string
   };
 }
