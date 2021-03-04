@@ -19,8 +19,8 @@ export const setUsers = (users: Object): User => {
       firstName: users.firstName,
       lastName: users.lastName,
       email: users.email,
+      token: users.token,
   },
-
   };
 }
 
@@ -32,8 +32,11 @@ const UsersApi = {
     return setUsers(response.data);
 
   }),
-  login: (email: string, password: string) => clientSecurity.post('/users/login', {data: {email, password}}).then(response => {
-    console.log(response);
+  login: (email: string, password: string) => clientSecurity.post('/users/login', {data: {email: email, password: password}}).then(response => {
+    if(response.data.id){
+      return setUsers(response.data);
+    }
+    return undefined;
   }),
   modify: (id: string, usersData: ModifyUsersData) => clientSecurity.put(`/users/${id}`, {data: usersData}).then(response => {
     console.log(response);
