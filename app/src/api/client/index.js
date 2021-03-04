@@ -1,2 +1,2 @@
-export { default as clientgroup } from './clientgroup';
-export { default as clientsecurity } from './clientsecurity';
+export { default as clientGroup } from './clientGroup';
+export { default as clientSecurity } from './clientSecurity';

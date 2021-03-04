@@ -1,4 +1,4 @@
-import { clientgroup } from '../client/clientgroup';
+import { clientgroup } from '../client/clientGroup';
 import {setIncludes} from "../helpers";
 import type {Groups} from "@/entities";
 
@@ -6,16 +6,13 @@ export interface NewGroupData {
     title: string,
     description: string,
     budget: number,
-    code: string,
-    registerDate: string
 }
 
 export interface ModifyGroupData {
     title: string,
     description: string,
     budget: number,
-    code: string,
-    registerDate: string
+
 }
 
 export const setGroup = (groups: Object): Groups => {
@@ -24,8 +21,6 @@ export const setGroup = (groups: Object): Groups => {
           title: groups.title,
           description: groups.description,
           budget: groups.budget,
-          code: groups.code,
-          registerDate: groups.registerDate,
   },
     relationships:{
         User_Groups: groups.User_Groups,

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const clientsecurity = axios.create({
+const clientSecurity = axios.create({
   baseURL: 'http://127.0.0.1:3000/',
   headers: {
     Accept: 'application/json',
@@ -9,4 +9,4 @@ const clientsecurity = axios.create({
   },
 });
 
-export default clientsecurity
+export default clientSecurity

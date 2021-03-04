@@ -1,4 +1,4 @@
-import { clientsecurity } from '../client/clientsecurity';
+import { clientsecurity } from '../client/clientSecurity';
 import {setIncludes} from "../helpers";
 import type { Users } from "@/entities";
 
@@ -6,16 +6,12 @@ export interface NewUsersData {
   firstName: string,
   lastName: string,
   email: string,
-  token?: string,
-  registerDate: string
 }
 
 export interface ModifyUsersData {
   firstName: string,
   lastName: string,
   email: string,
-  token?: string,
-  registerDate: Date
 }
 
 export const setUsers = (users: Object): Users => {
@@ -23,8 +19,6 @@ export const setUsers = (users: Object): Users => {
       firstName: users.firstName,
       lastName: users.lastName,
       email: users.email,
-      token: users.token,
-      registerDate: users.registerDate,
   },
 
   };

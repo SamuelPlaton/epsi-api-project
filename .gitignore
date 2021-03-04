@@ -1,6 +1,6 @@
 # Ignore IDE file
 .idea
-
+app/package-lock.json
 # Ignore api files
 apis/groups/node_modules/
 apis/groups/package-lock.json

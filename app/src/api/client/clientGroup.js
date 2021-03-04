@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const clientgroup = axios.create({
+const clientGroup = axios.create({
   baseURL: 'http://172.16.18.11:3001/',
   headers: {
     Accept: 'application/json',
@@ -9,4 +9,4 @@ const clientgroup = axios.create({
   },
 });
 
-export default clientgroup
+export default clientGroup

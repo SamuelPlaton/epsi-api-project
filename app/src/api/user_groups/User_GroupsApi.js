@@ -1,7 +1,7 @@
-import { clientgroup } from '../client/clientgroup';
+import { clientgroup } from '../client/clientGroup';
 import {setIncludes} from "../helpers";
 import type {Users_Groups} from "@/entities";
-import {Role} from "@/entities/Users_Groups";
+import {Role} from "@/entities/User_Group";
 
 export interface NewUsers_GroupsData {
     user: string,
