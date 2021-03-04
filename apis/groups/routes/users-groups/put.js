@@ -54,7 +54,7 @@ routes.put('/usersGroups/:group', async (request, response) => {
     return;
   }
 
-  const sql = "UPDATE USERS_GROUPS SET MONEY = ? WHERE USER = ? AND GROUP = ?";
+  const sql = "UPDATE USERS_GROUPS SET MONEY = ? WHERE USER = ? AND `GROUP` = ?";
   sqlInstance.request(sql,
     [
       money,
@@ -123,8 +123,8 @@ routes.put('/usersGroups/roles/:group', async (request, response) => {
     return;
   }
 
-  await sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "guest" WHERE GROUP = ? AND USER = ?', [request.params.group, idOwner]);
-  sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "admin" WHERE GROUP = ? AND USER = ?', [request.params.group, idUser]).then(response => {
+  await sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "guest" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idOwner]);
+  sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "admin" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idUser]).then(response => {
     response.send("permission changed");
     response.status(200).end();
   })
