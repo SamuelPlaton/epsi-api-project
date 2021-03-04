@@ -1,5 +1,5 @@
 import express from 'express';
-import {checkToken} from '../security/security.js';
+import {v4 as uuidv4} from 'uuid';
 import {sqlInstance} from '../../index.js';
 
 export const routes = express.Router();
@@ -44,22 +44,12 @@ routes.post('/usersGroups/:code', async (request, response) => {
         response.status(400).end();
         return;
     }
-    // Token check
-    const properToken = await checkToken(token, id);
-    if (!properToken) {
-        response.send('Wrong token');
-        response.status(403).end();
-        return;
-    }
 
-    const idGroup = await sqlInstance.request("SELECT ID FROM GROUP WHERE CODE = ?", [request.params.code]).then(response => response[0]["ID"])
+    const idGroup = await sqlInstance.request("SELECT ID FROM GROUPS WHERE CODE = ?", [request.params.code]).then(response => response[0]["ID"])
+    console.log(idGroup);
     // Insert user affiliated as owner
-    sqlInstance.request("INSERT INTO USERS_GROUPS(ID, ID_USER, ID_GROUP, ROLE, MONEY) VALUES(?, ?, ?, ?, ?)",
-        [uuidv4(),
-            id,
-            idGroup,
-            "guest",
-            0]).then(result => {
+    sqlInstance.request("INSERT INTO USERS_GROUPS(ID, USER, TOKEN, `GROUP`, ROLE, MONEY) VALUES(?, ?, ?, ?, ?, ?)",
+        [uuidv4(), id, token, idGroup, "guest", 0]).then(result => {
         response.send("");
         response.status(201).end();
     });

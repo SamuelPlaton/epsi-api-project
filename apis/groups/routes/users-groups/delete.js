@@ -77,7 +77,7 @@ routes.delete('/usersGroups/:id', async (request, response) => {
     return;
   }
 
-  sqlInstance.request('DELETE FROM USERS_GROUPS WHERE ID_USER = ? AND ID_GROUP = ?', [id, request.params.id]).then(result => {
+  sqlInstance.request('DELETE FROM USERS_GROUPS WHERE USER = ? AND GROUP = ?', [id, request.params.id]).then(result => {
     response.send('');
     response.status(204).end();
   });

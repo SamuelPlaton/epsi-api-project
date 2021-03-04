@@ -29,7 +29,7 @@ export const routes = express.Router();
  *        description: Array containing the group and the usersGroups affiliated
  */
 routes.get('/groups/:id',  async (request, response) => {
-  // Retrieve our Users, his coupons and stores affiliated
+  // Retrieve our Groups and his users groups affiliated
   const includes = request.query;
   // Setup our default query and param
   const query = ['SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID = ?'];
@@ -40,7 +40,7 @@ routes.get('/groups/:id',  async (request, response) => {
   // Everytime an include is settled, we increment the index result
   if(includes){
     if(includes.users){
-      query.push('SELECT ID, ID_USER, ID_GROUP, MONEY, ROLE FROM USERS_GROUPS US WHERE ID_GROUP = ?');
+      query.push('SELECT ID, USER, GROUP, MONEY, ROLE FROM USERS_GROUPS US WHERE ID_GROUP = ?');
       queryParams.push(request.params.id);
       acc += 1;
       idx[1] = acc;

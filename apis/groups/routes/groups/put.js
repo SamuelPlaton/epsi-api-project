@@ -66,7 +66,7 @@ routes.put('/groups/:id', async (request, response) => {
     return;
   }
 
-  const sql = "UPDATE BUDGET_GROUPS SET TITLE = ?, DESCRIPTION = ?, BUDGET = ? WHERE ID = ?";
+  const sql = "UPDATE GROUPS SET TITLE = ?, DESCRIPTION = ?, BUDGET = ? WHERE ID = ?";
   sqlInstance.request(sql,
     [
       title,

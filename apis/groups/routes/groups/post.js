@@ -2,7 +2,7 @@ import {v4 as uuidv4} from 'uuid';
 import {sqlInstance} from '../../index.js';
 import faker from 'faker';
 import express from 'express';
-import {checkToken} from '../security/security.js';
+import {checkCode} from '../security/security.js';
 
 export const routes = express.Router();
 
@@ -56,13 +56,6 @@ routes.post('/groups', async (request, response) => {
         response.status(400).end();
         return;
     }
-    // Token check
-    const properToken = await checkToken(params.token, params.id);
-    if (!properToken) {
-        response.send('Wrong token');
-        response.status(403).end();
-        return;
-    }
 
     let generatedCode = faker.random.number({min: 100000, max: 999999});
     let codeAlreadyExist = await checkCode(generatedCode);
@@ -73,7 +66,7 @@ routes.post('/groups', async (request, response) => {
     }
 
     // Insert group
-    const group = sqlInstance.request("INSERT INTO BUDGET_GROUPS(ID, TITLE, DESCRIPTION, BUDGET, CODE) VALUES(?, ?, ?, ?, ?)",
+    await sqlInstance.request("INSERT INTO GROUPS(ID, TITLE, DESCRIPTION, BUDGET, CODE) VALUES(?, ?, ?, ?, ?)",
         [uuidGroup,
             params.title,
             params.description ?? "",
@@ -83,15 +76,11 @@ routes.post('/groups', async (request, response) => {
         return result;
     });
 
+    const uuidUserGroup = uuidv4();
     // Insert user affiliated as owner
-    sqlInstance.request("INSERT INTO USERS_GROUPS(ID, ID_USER, ID_GROUP, ROLE, MONEY) VALUES(?, ?, ?, ?)",
-        [uuidv4(),
-            params.id,
-            params.token,
-            uuidGroup,
-            "admin",
-            0]).then(result => {
-        response.send(group);
+    await sqlInstance.request("INSERT INTO USERS_GROUPS(ID, USER, MONEY, ROLE, TOKEN, `GROUP`) VALUES(?, ?, ?, ?, ?,  ?)",
+        [uuidUserGroup, params.id, 0, 'admin', params.token, uuidGroup]).then(result => {
+        response.send(uuidGroup);
         response.status(201).end();
     });
 });

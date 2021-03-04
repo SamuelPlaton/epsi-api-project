@@ -1,6 +1,6 @@
 import { sqlInstance } from '../../index.js';
 import express from 'express';
-import { checkToken } from '../security/security.js';
+import { checkOwner, checkToken } from '../security/security.js';
 
 export const routes = express.Router();
 
@@ -54,7 +54,7 @@ routes.put('/usersGroups/:group', async (request, response) => {
     return;
   }
 
-  const sql = "UPDATE USERS_GROUPS SET MONEY = ? WHERE ID_USER = ? AND ID_GROUP = ?";
+  const sql = "UPDATE USERS_GROUPS SET MONEY = ? WHERE USER = ? AND GROUP = ?";
   sqlInstance.request(sql,
     [
       money,
@@ -68,27 +68,30 @@ routes.put('/usersGroups/:group', async (request, response) => {
 /**
  * @swagger
  *
- * /usersGroups/{groupId}:
+ * /usersGroups/roles/{groupId}:
  *   put:
  *     tags:
  *       - usersGroups
  *     produces:
  *       - application/json
  *     summary:
- *       - Update users groups
+ *       - Change admin role of a group
  *     requestBody:
  *      content:
  *        application/json:
  *          schema:
  *            type: object
  *            properties:
- *            id:
+ *            idOwner:
+ *              type: string
+ *            idUser:
  *              type: string
  *            token:
  *              type: string
  *            example:
- *              id: owner Id
- *              token: user Token
+ *              idOwner: owner Id
+ *              idUser: user Id
+ *              token: owner Token
  *     responses:
  *      '200':
  *        description: Updated
@@ -98,14 +101,14 @@ routes.put('/usersGroups/:group', async (request, response) => {
  *        description: Wrong token
  */
 routes.put('/usersGroups/roles/:group', async (request, response) => {
-  const {id, token} = request.body.data;
-  if(!id || !token ){
+  const {idOwner, idUser, token} = request.body.data;
+  if(!idOwner || !idUser || !token ){
     response.send('Bad parameters');
     response.status(400).end();
     return;
   }
   // Token check
-  const properToken = await checkToken(token, id);
+  const properToken = await checkToken(token, idOwner);
   if(!properToken){
     response.send('Wrong token');
     response.status(403).end();
@@ -113,20 +116,16 @@ routes.put('/usersGroups/roles/:group', async (request, response) => {
   }
 
   // Owner Check
-  const properOwner = await checkOwner(id, request.params.group);
+  const properOwner = await checkOwner(idOwner, request.params.group);
   if(!properOwner){
     response.send('You are not the owner');
     response.status(403).end();
     return;
   }
 
-  const sql = "UPDATE USERS_GROUPS SET MONEY = ? WHERE ID_USER = ? AND ID_GROUP = ?";
-  sqlInstance.request(sql,
-      [
-        money,
-        id,
-        request.params.id]).then(result => {
-    response.send("");
+  await sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "guest" WHERE GROUP = ? AND USER = ?', [request.params.group, idOwner]);
+  sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "admin" WHERE GROUP = ? AND USER = ?', [request.params.group, idUser]).then(response => {
+    response.send("permission changed");
     response.status(200).end();
-  });
+  })
 });
