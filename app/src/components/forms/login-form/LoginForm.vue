@@ -7,7 +7,7 @@
       <button type="submit" class="p-2 bg-blue-400 rounded text-white">
         Se connecter
       </button>
-      <button class="p-2 bg-blue-400 rounded text-white">
+      <button class="text-sm text-gray-400 mt-8">
         <router-link to="/Register">Pas encore de Compte</router-link>
       </button>
     </form>

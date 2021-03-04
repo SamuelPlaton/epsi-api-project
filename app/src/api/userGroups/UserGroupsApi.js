@@ -27,7 +27,8 @@ export const setUsersGroups = (userGroup: Object): UserGroup => {
 
 const UsersGroupsApi = {
   getByUser: (id: string) => clientGroup.get(`/usersGroups/user/${id}`).then(response => {
-    return response.data.map(us => setUsersGroups(us));
+    const users: Array = response.data;
+    return  users.map(us => setUsersGroups(us));
   }),
 
   getByGroup: (id: string) => clientGroup.get(`/usersGroups/group/${id}`).then(response => {

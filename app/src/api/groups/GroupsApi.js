@@ -38,7 +38,11 @@ const GroupsApi = {
     get: (id: string, includes?: Array<string>) => clientGroup.get(`/groups/${id}`, setIncludes(includes)).then(response => setGroup(response.data[0])),
 
     list: (ids: Array<string>) => clientGroup.get(`/groups?ids=${ids.join(',')}`).then(response => {
-        return response.data.map(group => setGroup(group));
+        const groups = response.data;
+        if(typeof groups === Array){
+            return groups.map(group => setGroup(group));
+        }
+        return [];
     }),
 
     post: (groupData: NewGroupData) => clientGroup.post('/groups', {data: groupData}).then(response => {
