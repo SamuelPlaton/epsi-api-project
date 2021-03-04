@@ -37,7 +37,7 @@ app.use('/', deleteGroupsRouter);
 app.use('/', getGroupsRouter);
 app.use('/', postGroupsRouter);
 app.use('/', putGroupsRouter);
-// Users Groups Routes
+// User Groups Routes
 app.use('/', deleteUsersGroupsRouter);
 app.use('/', getUsersGroupsRouter);
 app.use('/', postUsersGroupsRouter);
