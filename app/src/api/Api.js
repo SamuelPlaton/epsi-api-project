@@ -1,10 +1,10 @@
-import {GroupsApi} from "./userGroups/UserGroupsApi";
-import {UserGroupsApi} from "./groups/GroupsApi";
-import {UsersApi} from "./users/UsersApi";
+import {default as GroupsApi} from "./userGroups/UserGroupsApi";
+import {default as UserGroupsApi} from "./groups/GroupsApi";
+import {default as UsersApi} from "./users/UsersApi";
 
 const Api = {
   GroupsApi: GroupsApi,
-  UserGroupsApi: UserGroupsApi,
+  UsersGroupsApi: UserGroupsApi,
   UsersApi: UsersApi,
 }
 
