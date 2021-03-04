@@ -1,3 +1,3 @@
-export { Users_Groups } from './UserGroup'
-export { Groups } from './Group'
-export { Users } from './User'
+export { default as UserGroup } from './UserGroup'
+export { default as Group } from './Group'
+export { default as User } from './User'

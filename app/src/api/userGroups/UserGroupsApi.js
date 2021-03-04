@@ -1,7 +1,7 @@
-import { clientGroup } from '../client/clientGroup';
+import { clientGroup } from '../client';
 import {setIncludes} from "../helpers";
-import type {UserGroup} from "@/entities";
-import {Role} from "@/entities/UserGroup";
+import {UserGroup} from "../../entities";
+import {Role} from "../../entities/UserGroup";
 
 export interface NewUserGroupData {
     user: string,
@@ -31,7 +31,7 @@ export const setUsersGroups = (userGroup: Object): UserGroup => {
   };
 }
 
-const Users_GroupsApi = {
+const UsersGroupsApi = {
   get: (id: string, includes?: Array<string>) => clientGroup.get(`/usersGroups/${id}`, setIncludes(includes)).then(response => setUsersGroups(response.data[0])),
 
   post: (userGroupData: NewUserGroupData) => clientGroup.post('/usersGroups', {data: userGroupData}).then(response => {
@@ -42,4 +42,4 @@ const Users_GroupsApi = {
   })
 }
 
-export default Users_GroupsApi;
+export default UsersGroupsApi;
