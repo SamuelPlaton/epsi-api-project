@@ -1,12 +1,9 @@
 import { clientGroup } from '../client';
-import {setIncludes} from "../helpers";
 import {UserGroup} from "../../entities";
-import {Role} from "../../entities/UserGroup";
 
 export interface ModifyUserGroupData {
-  user: string,
+  id: string,
   money: number,
-  role: Role,
   token?: string,
 }
 
@@ -36,10 +33,23 @@ const UsersGroupsApi = {
   }),
 
   post: (id: string, token: string, code: string) => clientGroup.post(`/usersGroups`, {data: { code: code, id: id, token: token}}).then(response => {
-    console.log(response);
     return response.data;
   }),
   modify: (id: string, userGroupData: ModifyUserGroupData) => clientGroup.put(`/usersGroups/${id}`, {data: userGroupData}).then(response => {
+    return response;
+  }),
+
+  promote: (idGroup: string, idUser: string, idOwner: string, token: string) => clientGroup.put(`/usersGroups/roles/${idGroup}`, {data: {
+    idUser: idUser,
+      idOwner: idOwner,
+      token: token
+    }}).then(response => {
+    console.log(response);
+  }),
+
+  delete: (id: string, token: string, idUser: string, owner?: string) => clientGroup.delete(`/usersGroups/${id}`, {data: {
+    id: idUser, token: token, owner: owner
+    }}).then(response => {
     console.log(response);
   })
 }

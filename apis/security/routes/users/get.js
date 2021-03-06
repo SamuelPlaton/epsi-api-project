@@ -22,7 +22,7 @@ export const routes = express.Router();
  *
  */
 routes.get('/users/:id', (request, response) => {
-  sqlInstance.request('SELECT U.FIRSTNAME, U.LASTNAME, U.EMAIL, U.REGISTER_DATE FROM USERS U WHERE U.ID = ?', request.params.id).then(result => {
+  sqlInstance.request('SELECT U.firstname, U.lastname, U.email, U.register_date FROM USERS U WHERE U.ID = ?', request.params.id).then(result => {
     response.send(result);
   });
 });
@@ -64,7 +64,7 @@ routes.get('/users', (request, response) => {
     response.status(400).end();
     return;
   }
-  sqlInstance.request('SELECT ID, FIRSTNAME, LASTNAME,  EMAIL, REGISTER_DATE FROM USERS WHERE ID IN (?)', [request.query.ids.join(',')]).then(result => {
+  sqlInstance.request('SELECT id, firstname, lastname, email, register_date FROM USERS WHERE ID IN (?)', [request.query.ids.split(',')]).then(result => {
     response.send(result);
   });
 });

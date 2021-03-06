@@ -16,11 +16,11 @@ export interface ModifyUsersData {
 }
 
 export const setUsers = (users: Object): User => {
-  return {id: users.id, attributes: {
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      token: users.token,
+  return {id: users['id'], attributes: {
+      firstName: users['firstname'],
+      lastName: users['lastname'],
+      email: users['email'],
+      token: users['token'],
   },
   };
 }
@@ -28,12 +28,18 @@ export const setUsers = (users: Object): User => {
 const UsersApi = {
   get: (id: string, includes?: Array<string>) => clientSecurity.get(`/users/${id}`, setIncludes(includes)).then(response => setUsers(response.data[0])),
 
+  list: (ids: Array<string>) => clientSecurity.get(`/users?ids=${ids.join(',')}`).then(response => {
+    return response.data.map(u => setUsers(u));
+  }),
+
   post: (usersData: NewUsersData) => clientSecurity.post('/users', {data: usersData}).then(response => {
-    console.log(response.data);
+    if(response.data === -1){
+      return -1
+    }
     return setUsers(response.data);
   }),
   login: (email: string, password: string) => clientSecurity.post('/users/login', {data: {email: email, password: password}}).then(response => {
-    if(response.data.id){
+    if(response.data['id']){
       return setUsers(response.data);
     }
     return undefined;

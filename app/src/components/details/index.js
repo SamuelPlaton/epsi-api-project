@@ -1,0 +1,1 @@
+export { default as GroupDetail } from './group-detail/GroupDetail';

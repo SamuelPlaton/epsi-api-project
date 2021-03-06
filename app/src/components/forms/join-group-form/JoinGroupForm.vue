@@ -23,18 +23,18 @@ export default {
     async joinGroup() {
       const activeUser = JSON.parse(localStorage.activeUser);
       if (!activeUser) {
-        this.$vToastify('Erreur', 'Connectez-vous pour rejoindre un groupe');
+        this.$vToastify.error('Erreur', 'Connectez-vous pour rejoindre un groupe');
         return;
       }
       const idGroup = await Api.UsersGroupsApi.post(activeUser.id, activeUser.attributes.token, this.code);
       if(idGroup === -1){ // No group found
-        this.$vToastify('Erreur', 'Groupe introuvable');
+        this.$vToastify.error('Erreur', 'Groupe introuvable');
         return;
       }else if(idGroup === -2){ // Already in the group
-        this.$vToastify('Erreur', 'Vous êtes déjà dans ce groupe');
+        this.$vToastify.error('Erreur', 'Vous êtes déjà dans ce groupe');
         return;
       }else{
-        await router.push(`/group/${idGroup}`);
+        await router.push(`/groups/${idGroup}`);
       }
     }
   }
