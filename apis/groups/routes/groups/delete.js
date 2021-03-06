@@ -38,7 +38,7 @@ export const routes = express.Router();
  *        description: Unauthorized
  */
 routes.delete('/groups/:id', async (request, response) => {
-  const params = request.body.data;
+  const params = request.body;
 
   if (!params.token || !params.id) {
     response.send('Bad parameters');
@@ -62,7 +62,7 @@ routes.delete('/groups/:id', async (request, response) => {
 
   try {
     // Delete users_groups
-    sqlInstance.request('DELETE FROM USERS_GROUPS WHERE ID_GROUP = ?', [request.params.id]);
+    await sqlInstance.request('DELETE FROM USERS_GROUPS WHERE `GROUP` = ?', [request.params.id]);
     // Delete group
     sqlInstance.request('DELETE FROM GROUPS WHERE ID = ?', [request.params.id]).then(result => {
       response.send('');

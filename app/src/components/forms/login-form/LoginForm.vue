@@ -30,6 +30,7 @@ export default {
       const user = await Api.UsersApi.login(this.email, this.password);
       if(user){
         localStorage.activeUser = JSON.stringify(user);
+        console.log(user);
         await router.push('/');
       }else{
         this.$vToastify.error('Email ou mot de passe incorrect', 'Erreur');

@@ -2,7 +2,7 @@
   <div>
     <ul v-if="totalGroups.length > 0">
       <p class="text-lg font-bold my-2 text-left w-2/3 mx-auto">Mes groupes :</p>
-      <li v-for="group in totalGroups" class="mb-4 w-2/3 mx-auto">
+      <li v-for="group in totalGroups" class="mb-4 w-2/3 mx-auto cursor-pointer" @click="redirectGroup(group)">
         <GroupListItem :prop-group="group"/>
       </li>
     </ul>
@@ -15,6 +15,7 @@
 <script>
 import Api from "../../../api/Api";
 import GroupListItem from "./local-components/GroupListItem";
+import router from "../../../router";
 
 export default {
   name: "GroupList",
@@ -22,6 +23,11 @@ export default {
   data() {
     return {
       totalGroups: []
+    }
+  },
+  methods: {
+    redirectGroup(group){
+      router.push(`/groups/${group.group.id}`)
     }
   },
   async beforeCreate() {
@@ -32,7 +38,6 @@ export default {
       this.totalGroups = groups.map(group => {
         return {group: group, user: usersGroups.find(us => us.relationships.group === group.id)}
       });
-      console.log(groups);
     }
   }
 }

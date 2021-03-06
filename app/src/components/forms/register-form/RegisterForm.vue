@@ -8,7 +8,7 @@
         <input type="email" placeholder="john.doe@email.com" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="email">
     <label class="font-semibold text-lg">Entrez votre mot de passe :</label>
         <input type="password" placeholder="******" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="password">
-    <button type="submit">
+    <button type="submit" class="p-2 bg-blue-400 rounded text-white">
       Créer mon compte
     </button>
   </form>
@@ -33,8 +33,12 @@ export default {
     async register() {
       const user: NewUsersData = {firstName: this.firstName, lastName: this.lastName, email: this.email, password: this.password};
       const newUser = await Api.UsersApi.post(user);
-      localStorage.activeUser = JSON.stringify(newUser);
-      await router.push('/home');
+      if(newUser === -1){
+        this.$vToastify.error('Cet email est déjà pris', 'Erreur');
+      }else{
+        localStorage.activeUser = JSON.stringify(newUser);
+        await router.push('/');
+      }
     }
   }
 }

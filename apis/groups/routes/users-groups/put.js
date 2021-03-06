@@ -40,7 +40,7 @@ export const routes = express.Router();
  *        description: Wrong token
  */
 routes.put('/usersGroups/:group', async (request, response) => {
-  const {id, token, money} = request.body;
+  const {id, token, money} = request.body.data;
   if(!id || !token || !money ){
     response.send('Bad parameters');
     response.status(400).end();
@@ -124,8 +124,8 @@ routes.put('/usersGroups/roles/:group', async (request, response) => {
   }
 
   await sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "guest" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idOwner]);
-  sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "admin" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idUser]).then(response => {
-    response.send("permission changed");
+  sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "admin" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idUser]).then(result => {
+    response.send('permission changed');
     response.status(200).end();
   })
 });

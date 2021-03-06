@@ -30,7 +30,7 @@ export const routes = express.Router();
  */
 routes.get('/groups/:id',  async (request, response) => {
   // Retrieve our Groups and his users groups affiliated
-  const includes = request.query;
+  const includes = request.query.includes;
   // Setup our default query and param
   const query = ['SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID = ?'];
   const queryParams = [request.params.id];
@@ -39,8 +39,8 @@ routes.get('/groups/:id',  async (request, response) => {
   let acc = 0;
   // Everytime an include is settled, we increment the index result
   if(includes){
-    if(includes.users){
-      query.push('SELECT ID, USER, GROUP, MONEY, ROLE FROM USERS_GROUPS US WHERE ID_GROUP = ?');
+    if(includes.indexOf('users') !== -1){
+      query.push('SELECT ID, USER, `GROUP`, MONEY, ROLE FROM USERS_GROUPS US WHERE `GROUP` = ?');
       queryParams.push(request.params.id);
       acc += 1;
       idx[1] = acc;
@@ -89,7 +89,7 @@ routes.get('/groups/:id',  async (request, response) => {
 routes.get('/groups', (request, response) => {
   const {ids} = request.query;
   if (!ids) {
-    response.send('Bad parameters');
+    response.send('-1');
     response.status(400).end();
     return;
   }

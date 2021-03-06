@@ -40,6 +40,7 @@ export const routes = express.Router();
  *        description: Wrong token
  */
 routes.post('/usersGroups', async (request, response) => {
+    console.log(request.body)
     const {id, token, code} = request.body.data;
     // Parameters check
     if (!id || !token || !code) {
