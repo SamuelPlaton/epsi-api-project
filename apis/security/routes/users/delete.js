@@ -35,7 +35,7 @@ export const routes = express.Router();
  *        description: Unauthorized
  */
 routes.delete('/users/:id', async (request, response) => {
-  const params = request.body.data;
+  const params = request.body;
 
   if (!params.token) {
     response.send('Bad parameters');

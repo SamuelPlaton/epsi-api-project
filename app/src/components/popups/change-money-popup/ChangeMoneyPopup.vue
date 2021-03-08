@@ -6,7 +6,8 @@
 
 <script>
 import Popup from "../popup/Popup";
-import ChangeMoneyForm from "../../forms/change-money-form/ChangeMoneyForm";
+import {ChangeMoneyForm} from "../../forms";
+
 export default {
 name: "ChangeMoneyPopup",
   components: {ChangeMoneyForm, Popup},

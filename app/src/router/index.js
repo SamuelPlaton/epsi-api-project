@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import {CreateGroup, Group, Home, Login, Register} from "../views";
+import {CreateGroup, Group, Home, Login, Profile, Register} from "../views";
 
 Vue.use(VueRouter);
 
@@ -28,6 +28,11 @@ const routes = [
         path: "/groups/:id",
         name: "Group",
         component: Group
+    },
+    {
+        path: "/profile",
+        name: "Profile",
+        component: Profile
     }
 ];
 

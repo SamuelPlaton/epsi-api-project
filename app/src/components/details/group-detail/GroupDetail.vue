@@ -18,7 +18,7 @@
     </div>
     <div class="text-left mx-8 mt-8">
       <button role="button" class="p-2 bg-blue-400 rounded text-white mr-2" @click="moneyPopupOpened = true">
-        Modifier ma moula
+        Modifier mon argent
       </button>
       <ChangeMoneyPopup v-if="moneyPopupOpened" :group="group" :user-group="getUserGroup(activeUser.id)" @onLeave="moneyPopupOpened = false"/>
       <button v-if="!isAdmin" role="button" class="p-2 bg-red-400 rounded text-white mr-2" @click="leaveGroup">

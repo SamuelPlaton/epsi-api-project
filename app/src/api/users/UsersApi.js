@@ -13,6 +13,7 @@ export interface ModifyUsersData {
   firstName: string,
   lastName: string,
   email: string,
+  token: string,
 }
 
 export const setUsers = (users: Object): User => {
@@ -45,8 +46,14 @@ const UsersApi = {
     return undefined;
   }),
   modify: (id: string, usersData: ModifyUsersData) => clientSecurity.put(`/users/${id}`, {data: usersData}).then(response => {
-    console.log(response);
-  })
+    console.log(response.data);
+    return setUsers(response.data);
+  }),
+
+  delete: (id: string, token: string) => clientSecurity.delete(`/users/${id}`, {data: { token: token}}).then(response => {
+    return response.data;
+  }),
+
 }
 
 export default UsersApi;

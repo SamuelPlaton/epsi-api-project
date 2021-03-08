@@ -65,20 +65,26 @@ routes.put('/users/:id', async (request, response) => {
     return result.length > 0;
   });
   if(emailExist ){
-    response.send('Email already exist');
+    response.send('-1');
     response.status(403).end();
     return;
   }
 
   // Update our user
-  const sql = 'UPDATE USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ?, WHERE ID = ?';
+  const sql = 'UPDATE USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ? WHERE ID = ?';
   sqlInstance.request(sql,
     [
       params.firstName,
       params.lastName,
       params.email,
       request.params.id]).then(result => {
-    response.send('');
+    response.send({
+      id: request.params.id,
+      firstname: params.firstName,
+      lastname: params.lastName,
+      email: params.email,
+      token: params.token
+    });
     response.status(200).end();
   });
 });
