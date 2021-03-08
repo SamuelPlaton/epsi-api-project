@@ -6,7 +6,7 @@
 
 <script>
 import Popup from "../popup/Popup";
-import ModifyGroupForm from "../../forms/modify-group-form/ModifyGroupForm";
+import {ModifyGroupForm} from "../../forms";
 
 export default {
   name: "ModifyGroupPopup",

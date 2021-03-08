@@ -1,6 +1,6 @@
 <template>
   <form class="flex flex-col items-center my-8 w-2/3 mx-auto" name="join-group" @submit="changeMoney">
-    <p class="font-semibold text-lg">Changer mes sous :</p>
+    <p class="font-semibold text-lg">Changer mon argent :</p>
     <input type="number" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="money">
     <button type="submit" class="p-2 bg-blue-400 rounded text-white">
       Valider

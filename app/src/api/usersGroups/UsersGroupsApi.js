@@ -36,7 +36,7 @@ const UsersGroupsApi = {
     return response.data;
   }),
   modify: (id: string, userGroupData: ModifyUserGroupData) => clientGroup.put(`/usersGroups/${id}`, {data: userGroupData}).then(response => {
-    return response;
+    return response.data;
   }),
 
   promote: (idGroup: string, idUser: string, idOwner: string, token: string) => clientGroup.put(`/usersGroups/roles/${idGroup}`, {data: {
@@ -44,13 +44,17 @@ const UsersGroupsApi = {
       idOwner: idOwner,
       token: token
     }}).then(response => {
-    console.log(response);
+    return response.data;
   }),
 
   delete: (id: string, token: string, idUser: string, owner?: string) => clientGroup.delete(`/usersGroups/${id}`, {data: {
     id: idUser, token: token, owner: owner
     }}).then(response => {
+    return response.data;
+  }),
+  deleteUser: (id: string, token: string) => clientGroup.delete(`/usersGroups/user/${id}`, {data: {token: token}}).then(response => {
     console.log(response);
+    return response.data;
   })
 }
 

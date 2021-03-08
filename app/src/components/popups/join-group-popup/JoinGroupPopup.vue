@@ -6,7 +6,7 @@
 
 <script>
 import Popup from "../popup/Popup";
-import JoinGroupForm from "../../forms/join-group-form/JoinGroupForm";
+import {JoinGroupForm} from "../../forms";
 
 export default {
 name: "JoinGroupPopup",

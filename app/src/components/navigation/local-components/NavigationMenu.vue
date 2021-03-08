@@ -11,7 +11,8 @@
       </div>
       <div class="flex flex-col text-left ml-4 font-semibold text-lg">
         <router-link to="/" class="mb-1">Accueil</router-link>
-        <router-link to="/profile" v-if="activeUser">Profile</router-link>
+        <router-link to="/create-group" v-if="activeUser">Créer un groupe</router-link>
+        <router-link to="/profile" v-if="activeUser">Mon profil</router-link>
         <router-link to="/login" v-if="!activeUser" class="mb-1">Se connecter</router-link>
         <router-link to="/register" v-if="!activeUser">S'inscrire</router-link>
         <button v-if="activeUser" class="absolute bottom-0 mb-8 mx-auto rounded bg-blue-400 p-2 text-white" type="button" @click="disconnect">Se déconnecter</button>
