@@ -41,32 +41,31 @@ routes.delete('/groups/:id', async (request, response) => {
   const params = request.body;
 
   if (!params.token || !params.id) {
-    response.send('Bad parameters');
-    response.status(400).end();
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
 
   const properToken = await checkToken(params.token, params.id);
   if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
   const userOwner = await checkOwner(params.id, request.params.id);
   if(!userOwner){
-    response.send('User is not the owner');
-    response.status(403).end();
+    response.status(403);
+    response.send('User is not the owner').end();
     return;
   }
-
   try {
     // Delete users_groups
     await sqlInstance.request('DELETE FROM USERS_GROUPS WHERE `GROUP` = ?', [request.params.id]);
     // Delete group
     sqlInstance.request('DELETE FROM GROUPS WHERE ID = ?', [request.params.id]).then(result => {
-      response.send('');
-      response.status(204).end();
+      response.status(204);
+      response.send('').end();
     });
   } catch (err) {
     throw new Error(err);

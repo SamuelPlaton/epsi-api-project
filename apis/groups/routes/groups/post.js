@@ -51,9 +51,9 @@ routes.post('/groups', async (request, response) => {
     const params = request.body.data;
     const uuidGroup = uuidv4();
     // Parameters check
-    if (!params.id || !params.token || !params.title) {
-        response.send('Bad parameters');
-        response.status(400).end();
+    if (!params || !params.id || !params.token || !params.title) {
+        response.status(400);
+        response.send('Bad parameters').end();
         return;
     }
 
@@ -80,7 +80,7 @@ routes.post('/groups', async (request, response) => {
     // Insert user affiliated as owner
     await sqlInstance.request("INSERT INTO USERS_GROUPS(ID, USER, MONEY, ROLE, TOKEN, `GROUP`) VALUES(?, ?, ?, ?, ?,  ?)",
         [uuidUserGroup, params.id, 0, 'admin', params.token, uuidGroup]).then(result => {
-        response.send(uuidGroup);
-        response.status(201).end();
+        response.status(201);
+        response.send(uuidGroup).end();
     });
 });

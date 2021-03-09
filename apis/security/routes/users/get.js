@@ -60,8 +60,8 @@ routes.get('/users/:id', (request, response) => {
  */
 routes.get('/users', (request, response) => {
   if (!request.query.ids) {
-    response.send('Bad parameters');
-    response.status(400).end();
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
   sqlInstance.request('SELECT id, firstname, lastname, email, register_date FROM USERS WHERE ID IN (?)', [request.query.ids.split(',')]).then(result => {

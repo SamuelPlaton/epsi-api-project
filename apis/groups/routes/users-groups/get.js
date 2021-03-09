@@ -78,8 +78,8 @@ routes.get('/usersGroups/group/:id',  async (request, response) => {
  */
 routes.get('/usersGroups', (request, response) => {
     if (!request.query.ids) {
-        response.send('Bad parameters');
-        response.status(400).end();
+        response.status(400);
+        response.send('Bad parameters').end();
         return;
     }
     sqlInstance.request('SELECT ID, USER, `GROUP`, MONEY, ROLE FROM USERS_GROUPS WHERE ID IN (?)', [request.query.ids.join(',')]).then(result => {
