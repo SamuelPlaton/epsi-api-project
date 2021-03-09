@@ -1,5 +1,5 @@
 <template>
-  <div :class="`${isAdmin ? 'bg-blue-300' : 'bg-gray-100'} rounded-lg p-2 text-left shadow-lg`">
+  <div :class="`${isAdmin ? 'bg-blue-300' : 'bg-gray-50'} rounded p-2 text-left shadow-lg`">
     <div class="flex flew-row justify-between items-center">
       <p class="font-semibold">{{ group.attributes.title }}</p>
       <p v-if="isAdmin" class="text-xs">ADMIN</p>
