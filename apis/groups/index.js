@@ -29,8 +29,11 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // Create our express App
 export const app = express();
+// Allow user to send data in JSON Format
 app.use(express.json());
+// Allow user to send data in JSON Format
 app.use(cors());
+// Allow user to send data in JSON Format
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 // Groups routes
 app.use('/', deleteGroupsRouter);

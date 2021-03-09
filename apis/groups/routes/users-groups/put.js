@@ -42,15 +42,15 @@ export const routes = express.Router();
 routes.put('/usersGroups/:group', async (request, response) => {
   const {id, token, money} = request.body.data;
   if(!id || !token || !money ){
-    response.send('Bad parameters');
-    response.status(400).end();
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
   // Token check
   const properToken = await checkToken(token, id);
   if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
@@ -60,8 +60,8 @@ routes.put('/usersGroups/:group', async (request, response) => {
       money,
       id,
       request.params.group]).then(result => {
-    response.send("");
-    response.status(200).end();
+    response.status(200);
+    response.send("").end();
   });
 });
 
@@ -102,30 +102,30 @@ routes.put('/usersGroups/:group', async (request, response) => {
  */
 routes.put('/usersGroups/roles/:group', async (request, response) => {
   const {idOwner, idUser, token} = request.body.data;
-  if(!idOwner || !idUser || !token ){
-    response.send('Bad parameters');
-    response.status(400).end();
+  if(!request.body.data || !idOwner || !idUser || !token ){
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
   // Token check
   const properToken = await checkToken(token, idOwner);
   if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
   // Owner Check
   const properOwner = await checkOwner(idOwner, request.params.group);
   if(!properOwner){
-    response.send('You are not the owner');
-    response.status(403).end();
+    response.status(403);
+    response.send('You are not the owner').end();
     return;
   }
 
   await sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "guest" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idOwner]);
   sqlInstance.request('UPDATE USERS_GROUPS SET ROLE = "admin" WHERE `GROUP` = ? AND USER = ?', [request.params.group, idUser]).then(result => {
-    response.send('permission changed');
-    response.status(200).end();
+    response.status(200);
+    response.send('permission changed').end();
   })
 });

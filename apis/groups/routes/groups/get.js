@@ -89,8 +89,8 @@ routes.get('/groups/:id',  async (request, response) => {
 routes.get('/groups', (request, response) => {
   const {ids} = request.query;
   if (!ids) {
-    response.send('-1');
-    response.status(400).end();
+    response.status(400);
+    response.send('-1').end();
     return;
   }
   sqlInstance.request('SELECT ID, TITLE, DESCRIPTION, BUDGET, CODE FROM GROUPS WHERE ID IN (?)', [ids.split(',')]).then(result => {

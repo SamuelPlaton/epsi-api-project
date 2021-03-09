@@ -27,8 +27,6 @@ export const routes = express.Router();
  *              type: string
  *            lastName:
  *              type: string
- *            gender:
- *              type: string
  *            email:
  *              type: string
  *            password:
@@ -38,7 +36,6 @@ export const routes = express.Router();
  *            example:
  *              firstName: string
  *              lastName: string
- *              gender: male of female or other
  *              email: string
  *              password: string
  *              phone: string optional
@@ -53,9 +50,9 @@ routes.post('/users', async (request, response) => {
   const params = request.body.data;
   const uuid = uuidv4();
 
-  if (!params.firstName || !params.lastName || !params.email || !params.password ) {
-    response.send('Bad parameters');
-    response.status(400).end();
+  if ( !params || !params.firstName || !params.lastName || !params.email || !params.password ) {
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
   // Crypt password
@@ -66,8 +63,8 @@ routes.post('/users', async (request, response) => {
     return result.length > 0;
   });
   if(emailExist){
-    response.send('-1');
-    response.status(403).end();
+    response.status(403);
+    response.send('-1').end();
     return;
   }
 
@@ -79,14 +76,15 @@ routes.post('/users', async (request, response) => {
       params.lastName,
       params.email,
       token]).then(result => {
+    response.status(201);
     response.send({
       id: uuid,
       firstname: params.firstName,
       lastname: params.lastName,
       email: params.email,
       token: token
-    });
-    response.status(201).end();
+    }).end();
+
   });
 
 });
@@ -127,9 +125,9 @@ routes.post('/users', async (request, response) => {
 routes.post('/users/login', async (request, response) => {
   const params = request.body.data;
 
-  if (!params.email || !params.password) {
-    response.send('Bad parameters');
-    response.status(400).end();
+  if (!params || !params.email || !params.password) {
+    response.status(400);
+    response.send('-1').end();
     return;
   }
   // Retrieve token if the email is found
@@ -138,8 +136,8 @@ routes.post('/users/login', async (request, response) => {
     return result;
   });
   if (userResult.length === 0) {
-    response.send('Email not found');
-    response.status(403).end();
+    response.status(403);
+    response.send('-2').end();
     return;
   }
 
@@ -150,10 +148,10 @@ routes.post('/users/login', async (request, response) => {
   const tokenToPwd = cryptoJS.AES.decrypt(userResult[0]['token'], '22787802-a6e7-4c3d-8fc1-aab0ece1cb41').toString();
   // Handle connexion success or failure
   if(pwd === tokenToPwd){
-    response.send(userResult[0]);
-    response.status(200).end();
+    response.status(200);
+    response.send(userResult[0]).end();
   }else{
-    response.send('Wrong password');
-    response.status(403).end();
+    response.status(403);
+    response.send('-3').end();
   }
 });

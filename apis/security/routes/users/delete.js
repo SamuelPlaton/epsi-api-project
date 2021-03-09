@@ -38,27 +38,26 @@ routes.delete('/users/:id', async (request, response) => {
   const params = request.body;
 
   if (!params.token) {
-    response.send('Bad parameters');
-    response.status(400).end();
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
 
   const properToken = await checkToken(params.token, request.params.id);
   if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
   try {
     // Delete user
     sqlInstance.request('DELETE FROM USERS WHERE ID = ?', [request.params.id]).then(result => {
-      response.send('');
-      response.status(204).end();
+      response.status(204);
+      response.send('').end();
     });
   } catch (err) {
     throw new Error(err);
   }
-
 
 });

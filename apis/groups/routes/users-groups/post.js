@@ -40,12 +40,11 @@ export const routes = express.Router();
  *        description: Wrong token
  */
 routes.post('/usersGroups', async (request, response) => {
-    console.log(request.body)
     const {id, token, code} = request.body.data;
     // Parameters check
-    if (!id || !token || !code) {
-        response.send('Bad parameters');
-        response.status(400).end();
+    if ( !request.body.data || !id || !token || !code) {
+        response.status(400);
+        response.send('Bad parameters').end();
         return;
     }
 
@@ -54,8 +53,8 @@ routes.post('/usersGroups', async (request, response) => {
     });
     // If no group found send -1
     if(!group){
-        response.send('-1');
-        response.status(400).end();
+        response.status(400);
+        response.send('-1').end();
         return;
     }
     const idGroup = group["ID"];
@@ -65,15 +64,15 @@ routes.post('/usersGroups', async (request, response) => {
         return result[0];
     });
     if (userAlreadyInGroup) {
-        response.send('-2');
-        response.status(403).end();
+        response.status(403);
+        response.send('-2').end();
         return;
     }
 
     // Insert user affiliated as owner
     sqlInstance.request("INSERT INTO USERS_GROUPS(ID, USER, TOKEN, `GROUP`, ROLE, MONEY) VALUES(?, ?, ?, ?, ?, ?)",
         [uuidv4(), id, token, idGroup, "guest", 0]).then(result => {
-        response.send(idGroup);
-        response.status(201).end();
+        response.status(201);
+        response.send(idGroup).end();
     });
 });

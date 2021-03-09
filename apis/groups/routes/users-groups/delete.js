@@ -44,45 +44,44 @@ routes.delete('/usersGroups/:id', async (request, response) => {
   const {token, id, owner} = request.body;
 
   if (!token || !id) {
-    response.send('Bad parameters');
-    response.status(400).end();
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
 
   // delete from user himself
   const properToken = await checkToken(token, id);
   if(!properToken && !owner){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
   const properOwnerToken = await checkToken(token, owner);
   if(!properOwnerToken && owner){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
   const checkedOwner = await checkOwner(owner, request.params.id);
 
   if(owner && !checkedOwner){
-    response.send('You are not the owner');
-    response.status(403).end();
+    response.status(403);
+    response.send('You are not the owner').end();
     return;
   }
 
   if(owner === id){
-    response.send('You must set a new owner first');
-    response.status(403).end();
+    response.status(403);
+    response.send('You must set a new owner first').end();
     return;
   }
 
   sqlInstance.request('DELETE FROM USERS_GROUPS WHERE USER = ? AND `GROUP` = ?', [id, request.params.id]).then(result => {
-    response.send('');
-    response.status(204).end();
+    response.status(204);
+    response.send('').end();
   });
-
 });
 
 // Method DELETE for all user group of a user
@@ -121,16 +120,16 @@ routes.delete('/usersGroups/user/:id', async (request, response) => {
   const {token} = request.body;
 
   if (!token) {
-    response.send('Bad parameters');
-    response.status(400).end();
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
 
   // delete from user himself
   const properToken = await checkToken(token, request.params.id);
   if(!properToken) {
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
@@ -144,8 +143,8 @@ routes.delete('/usersGroups/user/:id', async (request, response) => {
 
   // then delete the groups
   await sqlInstance.request('DELETE FROM GROUPS WHERE ID IN (?)', [usersGroups.join(',')]).then(result => {
-    response.send('');
-    response.status(204).end();
+    response.status(204);
+    response.send('').end();
   });
 
 

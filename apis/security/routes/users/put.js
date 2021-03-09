@@ -47,16 +47,16 @@ export const routes = express.Router();
  */
 routes.put('/users/:id', async (request, response) => {
   const params = request.body.data;
-  if (!params.firstName || !params.lastName || !params.email || !params.token) {
-    response.send('Bad parameters');
-    response.status(400).end();
+  if ( !params || !params.firstName || !params.lastName || !params.email || !params.token) {
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
 
   const properToken = await checkToken(params.token, request.params.id);
   if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
 
@@ -65,8 +65,8 @@ routes.put('/users/:id', async (request, response) => {
     return result.length > 0;
   });
   if(emailExist ){
-    response.send('-1');
-    response.status(403).end();
+    response.status(403);
+    response.send('-1').end();
     return;
   }
 
@@ -78,14 +78,15 @@ routes.put('/users/:id', async (request, response) => {
       params.lastName,
       params.email,
       request.params.id]).then(result => {
+    response.status(200);
     response.send({
       id: request.params.id,
       firstname: params.firstName,
       lastname: params.lastName,
       email: params.email,
       token: params.token
-    });
-    response.status(200).end();
+    }).end();
+
   });
 });
 
@@ -127,7 +128,7 @@ routes.put('/users/:id', async (request, response) => {
  */
 routes.put('/users/password/:id', async (request, response) => {
   const {previousPassword, newPassword, token} = request.body.data;
-  if (!previousPassword || !newPassword || !token) {
+  if ( !response.body.data || !previousPassword || !newPassword || !token) {
     response.send('Bad parameters');
     response.status(400).end();
     return;

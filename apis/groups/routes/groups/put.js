@@ -47,22 +47,22 @@ export const routes = express.Router();
  */
 routes.put('/groups/:id', async (request, response) => {
   const {id, token, title, description, budget} = request.body.data;
-  if(!id || !token || !title || !description || !budget ){
-    response.send('Bad parameters');
-    response.status(400).end();
+  if( !request.body.data || !id || !token || !title || !description || !budget ){
+    response.status(400);
+    response.send('Bad parameters').end();
     return;
   }
   // Token check
   const properToken = await checkToken(token, id);
   if(!properToken){
-    response.send('Wrong token');
-    response.status(403).end();
+    response.status(403);
+    response.send('Wrong token').end();
     return;
   }
   const properOwner = await checkOwner(id, request.params.id);
   if(!properOwner){
-    response.send('Not owner');
-    response.status(403).end();
+    response.status(403);
+    response.send('Not owner').end();
     return;
   }
 
@@ -73,7 +73,7 @@ routes.put('/groups/:id', async (request, response) => {
       description,
       budget,
       request.params.id]).then(result => {
-    response.send("");
-    response.status(200).end();
+    response.status(200);
+    response.send("").end();
   });
 });
