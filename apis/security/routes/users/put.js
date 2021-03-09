@@ -73,11 +73,11 @@ routes.put('/users/:id', async (request, response) => {
   // Update our user
   const sql = 'UPDATE USERS SET FIRSTNAME = ?, LASTNAME = ?, EMAIL = ? WHERE ID = ?';
   sqlInstance.request(sql,
-    [
-      params.firstName,
-      params.lastName,
-      params.email,
-      request.params.id]).then(result => {
+      [
+        params.firstName,
+        params.lastName,
+        params.email,
+        request.params.id]).then(result => {
     response.status(200);
     response.send({
       id: request.params.id,

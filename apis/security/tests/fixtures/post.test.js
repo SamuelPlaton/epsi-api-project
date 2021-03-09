@@ -60,4 +60,17 @@ describe('POST', function () {
             }).expect('-3', done);
         });
     })
+    describe('/users', function () {
+        it('should not create user', function (done) {
+            request(app).post('/users').send({
+                data: {
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    email: 'john.doe@supertest.com',
+                    password: 'password'
+                }
+            }).expect(403, done);
+        });
+
+    })
 })

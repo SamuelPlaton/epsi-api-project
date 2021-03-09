@@ -30,7 +30,6 @@ before(function (done) {
             ['2', 'John', 'Doe', 'john.doe3@supertest.com', token]);
         sqlInstance.request('INSERT INTO USERS(ID, FIRSTNAME, LASTNAME, EMAIL, TOKEN) VALUES(?, ?, ?, ?, ?)',
             ['3', 'John', 'Doe', 'john.doe4@supertest.com', '3']);
-
         return done();
     });
 });
@@ -41,6 +40,7 @@ after(function (done) {
     sqlInstance.request('DELETE FROM USERS WHERE EMAIL = "john.doe@supertest.com"').then(done);
     sqlInstance.request('DELETE FROM USERS WHERE EMAIL = "john.doe2@supertest.com"').then(done);
     sqlInstance.request('DELETE FROM USERS WHERE EMAIL = "john.doe3@supertest.com"').then(done);
+    sqlInstance.request('DELETE FROM USERS WHERE EMAIL = "john.doe4@supertest.com"').then(done);
     sails.lower(done);
 
 });

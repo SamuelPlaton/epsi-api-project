@@ -71,11 +71,11 @@ routes.post('/users', async (request, response) => {
   // Insert our user
   const sql = 'INSERT INTO USERS(ID, FIRSTNAME, LASTNAME, EMAIL, TOKEN) VALUES(?, ?, ?, ?, ?)';
   sqlInstance.request(sql,
-    [uuid,
-      params.firstName,
-      params.lastName,
-      params.email,
-      token]).then(result => {
+      [uuid,
+        params.firstName,
+        params.lastName,
+        params.email,
+        token]).then(result => {
     response.status(201);
     response.send({
       id: uuid,
@@ -132,7 +132,7 @@ routes.post('/users/login', async (request, response) => {
   }
   // Retrieve token if the email is found
   const userResult = await sqlInstance.request("SELECT * FROM USERS WHERE EMAIL = ? LIMIT 1",
-    [params.email]).then(result => {
+      [params.email]).then(result => {
     return result;
   });
   if (userResult.length === 0) {
