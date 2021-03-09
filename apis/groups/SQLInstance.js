@@ -40,7 +40,6 @@ export default class SQLInstance{
     }).catch(err => {
       var log_file_err = fs.createWriteStream('./error.log', {flags: 'a'});
       log_file_err.write(util.format(moment(Date.now()).format('LTS') + ' : Caught exception: ' + err + ' | ' + err.sql) + '\n');
-      console.log(err);
     });
   }
 
