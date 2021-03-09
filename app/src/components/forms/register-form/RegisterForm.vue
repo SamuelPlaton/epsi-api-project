@@ -1,9 +1,9 @@
 <template>
   <form class="flex flex-col items-center my-8 w-2/3 mx-auto" name="register" @submit="register">
     <label class="font-semibold text-lg">Entrez votre prénom :</label>
-        <input type="text" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="firstName">
+        <input type="text" required placeholder="John" class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="firstName">
     <label class="font-semibold text-lg">Entrez votre nom :</label>
-        <input type="text" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="lastName">
+        <input type="text" required placeholder="Doe" class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="lastName">
     <label class="font-semibold text-lg">Entrez votre Email :</label>
         <input type="email" placeholder="john.doe@email.com" required class="my-4 bg-gray-100 w-full px-1 py-2 rounded" v-model="email">
     <label class="font-semibold text-lg">Entrez votre mot de passe :</label>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-row justify-between mx-8">
+    <div class="flex flex-row justify-between ml-8 mr-4">
       <div class="text-left">
         <p class="text-lg font-semibold">{{ group.attributes.title }}</p>
         <p class="mt-2 mb-4">{{ group.attributes.description }}</p>
@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="text-left mx-8 mt-8">
+    <div class="text-left ml-8 mt-8">
       <button role="button" class="p-2 bg-blue-400 rounded text-white mr-2" @click="moneyPopupOpened = true">
         Modifier mon argent
       </button>
