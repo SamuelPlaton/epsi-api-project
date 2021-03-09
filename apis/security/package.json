@@ -11,5 +11,10 @@
     "swagger-jsdoc": "^6.0.1",
     "swagger-ui-express": "^4.1.6",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "mocha": "^8.3.1",
+    "sails": "^1.4.0",
+    "supertest": "^6.1.3"
   }
 }
