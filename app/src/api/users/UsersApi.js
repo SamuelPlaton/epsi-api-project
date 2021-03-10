@@ -34,17 +34,15 @@ const UsersApi = {
   }),
 
   post: (usersData: NewUsersData) => clientSecurity.post('/users', {data: usersData}).then(response => {
-    if(response.data === -1){
-      return -1
-    }
     return setUsers(response.data);
-  }),
+  }).catch(error => error.response.data),
+
   login: (email: string, password: string) => clientSecurity.post('/users/login', {data: {email: email, password: password}}).then(response => {
     if(response.data['id']){
       return setUsers(response.data);
     }
     return undefined;
-  }),
+  }).catch(err => undefined),
   modify: (id: string, usersData: ModifyUsersData) => clientSecurity.put(`/users/${id}`, {data: usersData}).then(response => {
     console.log(response.data);
     return setUsers(response.data);

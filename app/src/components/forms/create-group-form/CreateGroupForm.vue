@@ -39,7 +39,7 @@ export default {
         id: this.activeUser.id,
         token: this.activeUser.attributes.token};
       const newGroupId = await Api.GroupsApi.post(group);
-      await router.push(`/groups/${newGroupId}`)
+      await router.push(`/groups/${newGroupId}`);
     }
   }
 }

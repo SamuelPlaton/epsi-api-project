@@ -51,7 +51,7 @@ const GroupsApi = {
             return groups.map(group => setGroup(group));
         }
         return [];
-    }),
+    }).catch(err => []),
 
     post: (groupData: NewGroupData) => clientGroup.post('/groups', {data: groupData}).then(response => {
         return response.data;

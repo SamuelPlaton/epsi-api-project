@@ -34,7 +34,7 @@ const UsersGroupsApi = {
 
   post: (id: string, token: string, code: string) => clientGroup.post(`/usersGroups`, {data: { code: code, id: id, token: token}}).then(response => {
     return response.data;
-  }),
+  }).catch(err => err.response.data),
   modify: (id: string, userGroupData: ModifyUserGroupData) => clientGroup.put(`/usersGroups/${id}`, {data: userGroupData}).then(response => {
     return response.data;
   }),
@@ -53,7 +53,6 @@ const UsersGroupsApi = {
     return response.data;
   }),
   deleteUser: (id: string, token: string) => clientGroup.delete(`/usersGroups/user/${id}`, {data: {token: token}}).then(response => {
-    console.log(response);
     return response.data;
   })
 }
