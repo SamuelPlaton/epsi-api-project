@@ -1,0 +1,593 @@
+
+window.onload = function() {
+  // Build a system
+  var url = window.location.search.match(/url=([^&]+)/);
+  if (url && url.length > 1) {
+    url = decodeURIComponent(url[1]);
+  } else {
+    url = window.location.origin;
+  }
+  var options = {
+  "swaggerDoc": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Api Documentation",
+      "description": "This is our Microservices app api doc",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/groups/{id}": {
+        "delete": {
+          "tags": [
+            "groups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Delete a group from the database if the user is the owner"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "token": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "token": "string",
+                    "id": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "DELETED"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Unauthorized"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "groups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Get all data from a group"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "users": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "users": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Array containing the group and the usersGroups affiliated"
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "groups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Update group by the owner"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "id": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "budget": {
+                    "type": "float"
+                  },
+                  "example": {
+                    "id": "user Id",
+                    "userToken": "user Token",
+                    "budget": "float",
+                    "title": "string",
+                    "description": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Updated"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Wrong token"
+            }
+          }
+        }
+      },
+      "/groups": {
+        "get": {
+          "tags": [
+            "groups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Get a list of groups from the database"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "array"
+                    }
+                  },
+                  "example": {
+                    "ids": [
+                      1,
+                      2,
+                      3
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Array of groups"
+            },
+            "400": {
+              "description": "Bad parameters"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "groups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Add a group to the database"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "budget": {
+                    "type": "float"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "id": "user Id",
+                    "token": "string",
+                    "title": "string",
+                    "description": "string",
+                    "budget": "float"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Posted"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Wrong token"
+            }
+          }
+        }
+      },
+      "/usersGroups/{id}": {
+        "delete": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Delete a user from a group (himself or anyone if the user is owner)"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "token": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "token": "string",
+                    "id": "user id",
+                    "owner": "id owner (optional)"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "DELETED"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/usersGroups/user/{id}": {
+        "delete": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Delete a user from all of his groups"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "id": {
+                    "type": "string"
+                  },
+                  "owner": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "token": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "204": {
+              "description": "DELETED"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Unauthorized"
+            }
+          }
+        },
+        "get": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Get all data from a usersGroups with a user id"
+          ],
+          "responses": {
+            "200": {
+              "description": "Array containing the usersGroup"
+            }
+          }
+        }
+      },
+      "/usersGroups/group/{id}": {
+        "get": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Get all data from a usersGroups with a group id"
+          ],
+          "responses": {
+            "200": {
+              "description": "Array containing the usersGroup"
+            }
+          }
+        }
+      },
+      "/usersGroups": {
+        "get": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Get a list of users groups from the database"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "array"
+                    }
+                  },
+                  "example": {
+                    "ids": [
+                      1,
+                      2,
+                      3
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Array of users groups"
+            },
+            "400": {
+              "description": "Bad parameters"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Join a group as a guest"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "id": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "id": "user Id",
+                    "token": "string",
+                    "code": "group code"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Posted"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Wrong token"
+            }
+          }
+        }
+      },
+      "/usersGroups/{groupId}": {
+        "put": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Update users groups"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "id": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "money": {
+                    "type": "float"
+                  },
+                  "example": {
+                    "id": "user Id",
+                    "token": "user Token",
+                    "money": "float"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Updated"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Wrong token"
+            }
+          }
+        }
+      },
+      "/usersGroups/roles/{groupId}": {
+        "put": {
+          "tags": [
+            "usersGroups"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "summary": [
+            "Change admin role of a group"
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": null,
+                  "idOwner": {
+                    "type": "string"
+                  },
+                  "idUser": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "example": {
+                    "idOwner": "owner Id",
+                    "idUser": "user Id",
+                    "token": "owner Token"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Updated"
+            },
+            "400": {
+              "description": "Bad parameters"
+            },
+            "403": {
+              "description": "Wrong token"
+            }
+          }
+        }
+      }
+    },
+    "components": {},
+    "tags": []
+  },
+  "customOptions": {}
+};
+  url = options.swaggerUrl || url
+  var urls = options.swaggerUrls
+  var customOptions = options.customOptions
+  var spec1 = options.swaggerDoc
+  var swaggerOptions = {
+    spec: spec1,
+    url: url,
+    urls: urls,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  }
+  for (var attrname in customOptions) {
+    swaggerOptions[attrname] = customOptions[attrname];
+  }
+  var ui = SwaggerUIBundle(swaggerOptions)
+
+  if (customOptions.oauth) {
+    ui.initOAuth(customOptions.oauth)
+  }
+
+  if (customOptions.authAction) {
+    ui.authActions.authorize(customOptions.authAction)
+  }
+
+  window.ui = ui
+}
